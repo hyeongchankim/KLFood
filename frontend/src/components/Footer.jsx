@@ -1,24 +1,25 @@
+const klfoodLogo = '/KLfood_로고.jpeg';
+const chamBanchanLogo = '/참반찬_로고.jpeg';
+
 const Footer = () => {
     return (
         <footer className="bg-gray-50 border-t border-[var(--color-border)] pt-16 pb-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-12">
                     <div className="col-span-1 md:col-span-2">
-                        <div className="flex items-center gap-2 mb-6">
-                            <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold text-sm">
-                                L&K
-                            </div>
-                            <span className="font-bold text-xl text-gray-800">L&K Food</span>
+                        <div className="flex items-center gap-3 mb-6">
+                            <img src={klfoodLogo} alt="KL FOOD 로고" className="h-16 w-auto object-contain" />
+                            <span className="font-bold text-xl text-gray-800">KL FOOD</span>
                         </div>
                         <p className="text-sm text-gray-500 mb-6 leading-relaxed">
-                            매일 아침 건강한 식탁을 책임지는 L&K Food입니다.<br />
+                            매일 아침 건강한 식탁을 책임지는 KL FOOD입니다.<br />
                             B2B 대량 급식부터 프리미엄 수제반찬 새벽배송까지,<br />
                             엄선된 식재료로 정성을 다해 만듭니다.
                         </p>
                         <div className="text-sm text-gray-500">
-                            <p>상호명: (주)엘앤케이푸드 | 대표자: 홍길동</p>
-                            <p>사업자등록번호: 123-45-67890</p>
-                            <p>주소: 서울특별시 강남구 테헤란로 123, 엘앤케이타워 4층</p>
+                            <p>상호명: (주)케이엘푸드 | 대표자: 강준혁</p>
+                            <p>사업자등록번호: 678-31-01830</p>
+                            <p>주소: 경기도 남양주시 오남읍 양지로 46번길 140-1</p>
                         </div>
                     </div>
 
@@ -54,7 +55,7 @@ const Footer = () => {
 
                 <div className="pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-xs text-gray-400">
-                        © 2026 L&K Food Corp. All rights reserved.
+                        © 2026 KL FOOD Corp. All rights reserved.
                     </p>
                     <div className="flex gap-4">
                         {/* Social Icons Placeholder */}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ShoppingCart, Star, Clock, Heart, SlidersHorizontal, ChevronDown, Trophy, Sparkles } from 'lucide-react';
+const chamBanchanLogo = '/참반찬_로고.jpeg';
 
 const themeBanners = [
     {
@@ -122,13 +123,14 @@ const B2CMainPage = () => {
     return (
         <div className="bg-gray-50 min-h-screen pb-20">
             {/* Banner Section */}
-            <section className="bg-[#FFEFE5] py-16 px-4 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-64 h-64 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-x-1/2 -translate-y-1/2"></div>
-                <div className="absolute bottom-0 right-0 w-80 h-80 bg-red-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50 translate-x-1/3 translate-y-1/3"></div>
+            <section className="bg-[#F2F7EC] py-16 px-4 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-64 h-64 bg-[#CDE0C3] rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-x-1/2 -translate-y-1/2"></div>
+                <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#E7F0DF] rounded-full mix-blend-multiply filter blur-3xl opacity-50 translate-x-1/3 translate-y-1/3"></div>
 
                 <div className="max-w-7xl mx-auto relative z-10 text-center">
-                    <span className="inline-block px-4 py-1.5 bg-white text-[var(--color-primary)] font-bold text-sm rounded-full shadow-sm mb-4 border border-orange-100">
-                        참반찬 정기구독
+                    <span className="inline-flex items-center gap-3 px-4 py-2 bg-white text-[var(--color-primary)] font-bold text-sm rounded-full shadow-sm mb-4 border border-[#D7E4D4]">
+                        <img src={chamBanchanLogo} alt="참반찬 로고" className="h-8 w-8 object-contain" />
+                        참반찬
                     </span>
                     <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight tracking-tight">
                         내일의 건강한 식탁, <br className="md:hidden" />
@@ -140,11 +142,11 @@ const B2CMainPage = () => {
                     </p>
                     <div className="flex flex-wrap justify-center gap-4 text-sm font-medium text-gray-600">
                         <div className="flex items-center gap-1.5 bg-white/60 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm">
-                            <Clock className="w-4 h-4 text-orange-500" />
+                            <Clock className="w-4 h-4 text-[var(--color-primary)]" />
                             밤 10시 전 주문 시 내일 새벽 도착
                         </div>
                         <div className="flex items-center gap-1.5 bg-white/60 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm">
-                            <Star className="w-4 h-4 text-orange-500" />
+                            <Star className="w-4 h-4 text-[var(--color-primary)]" />
                             첫 구매 100원 딜 이벤트 진행 중
                         </div>
                     </div>
