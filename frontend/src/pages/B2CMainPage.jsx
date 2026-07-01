@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { ShoppingCart, Star, Clock, Heart, SlidersHorizontal, ChevronDown, Trophy, Sparkles } from 'lucide-react';
+import { ShoppingCart, Star, Clock, Heart, SlidersHorizontal, ChevronDown, Trophy, Sparkles, X, Search } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import { useSearchParams } from 'react-router-dom';
 const chamBanchanLogo = '/참반찬_로고.jpeg';
 
 const themeBanners = [
     {
         id: 1,
-        title: "집밥의 완성,\n더반찬의 수제 국세트",
+        title: "집밥의 완성,\n참반찬의 수제 국세트",
         subtitle: "냉동실에 챙겨두는 따뜻한 행복",
         bgColor: "bg-[#715438]",
         textColor: "text-white",
@@ -32,7 +34,7 @@ const themeBanners = [
 const bestSellers = [
     {
         id: 1,
-        name: "더반찬 광주별미소고기육전(240g)",
+        name: "참반찬 광주별미소고기육전(240g)",
         price: 14900,
         rating: 4.8,
         reviews: 1262,
@@ -42,7 +44,7 @@ const bestSellers = [
     },
     {
         id: 2,
-        name: "더반찬 모둠두메산나물(219g)",
+        name: "참반찬 모둠두메산나물(219g)",
         price: 10900,
         rating: 4.7,
         reviews: 1505,
@@ -52,7 +54,7 @@ const bestSellers = [
     },
     {
         id: 3,
-        name: "더반찬 고추장소스진미채(180g)",
+        name: "참반찬 고추장소스진미채(180g)",
         price: 10900,
         rating: 4.7,
         reviews: 630,
@@ -75,7 +77,7 @@ const newArrivals = [
     },
     {
         id: 2,
-        name: "더반찬 동원참치 미역국(550g)",
+        name: "참반찬 동원참치 미역국(550g)",
         price: 6500,
         rating: 4.9,
         reviews: 124,
@@ -85,7 +87,7 @@ const newArrivals = [
     },
     {
         id: 3,
-        name: "더반찬 싱글부대찌개(550g)",
+        name: "참반찬 싱글부대찌개(550g)",
         price: 8900,
         rating: 4.6,
         reviews: 89,
@@ -99,6 +101,17 @@ const B2CMainPage = () => {
     const [data, setData] = useState({ categories: [], products: [] });
     const [loading, setLoading] = useState(true);
     const [activeCategory, setActiveCategory] = useState('전체');
+    const { addItem } = useCart();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const searchQuery = searchParams.get('q') || '';
+    const [bannerIndex, setBannerIndex] = useState(0);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setBannerIndex(prev => (prev + 1) % themeBanners.length);
+        }, 5000);
+        return () => clearInterval(timer);
+    }, []);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -116,9 +129,13 @@ const B2CMainPage = () => {
         fetchProducts();
     }, []);
 
-    const filteredProducts = activeCategory === '전체'
-        ? data.products
-        : data.products?.filter(p => p.category === activeCategory) || [];
+    const filteredProducts = (data.products || []).filter(p => {
+        const matchCategory = activeCategory === '전체' || p.category === activeCategory;
+        const matchSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchCategory && matchSearch;
+    });
+
+    const clearSearch = () => setSearchParams({});
 
     return (
         <div className="bg-gray-50 min-h-screen pb-20">
@@ -153,13 +170,15 @@ const B2CMainPage = () => {
                 </div>
             </section>
 
-            {/* Theme Banners Section (Horizontal Scroll) */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 overflow-hidden">
-                <div className="flex gap-4 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                    {themeBanners.map(banner => (
-                        <div key={banner.id} className={`relative flex-none w-[300px] sm:w-[400px] md:w-[500px] h-[300px] sm:h-[350px] rounded-2xl overflow-hidden snap-center group shadow-sm`}>
-                            {/* Background image filling half the banner, or customized layout */}
-                            <img src={banner.imageUrl} alt="Theme Banner" className="absolute right-0 top-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 mix-blend-overlay opacity-60" />
+            {/* Theme Banners Section (Auto-rotating Carousel) */}
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+                <div className="relative w-full h-[300px] sm:h-[350px] rounded-2xl overflow-hidden shadow-sm group">
+                    {themeBanners.map((banner, idx) => (
+                        <div
+                            key={banner.id}
+                            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${idx === bannerIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                        >
+                            <img src={banner.imageUrl} alt="Theme Banner" className="absolute right-0 top-0 w-full h-full object-cover mix-blend-overlay opacity-60" />
                             <div className={`absolute inset-0 ${banner.bgColor} -z-10`}></div>
 
                             <div className="relative h-full flex flex-col justify-end p-8 z-10 w-full bg-gradient-to-t from-black/60 to-transparent">
@@ -172,6 +191,17 @@ const B2CMainPage = () => {
                             </div>
                         </div>
                     ))}
+
+                    <div className="absolute bottom-4 right-4 z-20 flex gap-2">
+                        {themeBanners.map((banner, idx) => (
+                            <button
+                                key={banner.id}
+                                onClick={() => setBannerIndex(idx)}
+                                className={`h-1.5 rounded-full transition-all ${idx === bannerIndex ? 'w-6 bg-white' : 'w-1.5 bg-white/50 hover:bg-white/80'}`}
+                                aria-label={`배너 ${idx + 1}로 이동`}
+                            />
+                        ))}
+                    </div>
                 </div>
             </section>
 
@@ -186,9 +216,6 @@ const B2CMainPage = () => {
                         <div key={product.id} className="flex-none w-[280px] sm:w-[320px] snap-start group cursor-pointer">
                             <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-gray-100 shadow-sm group-hover:shadow-md transition-shadow">
                                 <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                <div className="absolute top-3 left-3 bg-[#0066FF] text-white text-[11px] font-bold px-2 py-1 rounded-[4px] shadow-sm flex items-center gap-1 tracking-wide">
-                                    <span className="font-extrabold">B+</span> SAVE
-                                </div>
                             </div>
                             <div className="px-1">
                                 <h3 className="font-medium text-gray-800 text-[16px] mb-1.5 line-clamp-1 group-hover:underline decoration-gray-300 underline-offset-4">{product.name}</h3>
@@ -223,9 +250,6 @@ const B2CMainPage = () => {
                         <div key={product.id} className="flex-none w-[280px] sm:w-[320px] snap-start group cursor-pointer">
                             <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-gray-100 shadow-sm group-hover:shadow-md transition-shadow">
                                 <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                <div className="absolute top-3 left-3 bg-[#0066FF] text-white text-[11px] font-bold px-2 py-1 rounded-[4px] shadow-sm flex items-center gap-1 tracking-wide">
-                                    <span className="font-extrabold">B+</span> SAVE
-                                </div>
                             </div>
                             <div className="px-1">
                                 <h3 className="font-medium text-gray-800 text-[16px] mb-1.5 line-clamp-1 group-hover:underline decoration-gray-300 underline-offset-4">{product.name}</h3>
@@ -302,9 +326,18 @@ const B2CMainPage = () => {
 
                 {/* Product Grid */}
                 <main className="flex-1">
+                    {searchQuery && (
+                        <div className="flex items-center gap-2 mb-4 px-4 py-2.5 bg-orange-50 border border-orange-100 rounded-xl text-sm text-gray-700">
+                            <Search className="w-4 h-4 text-[var(--color-primary)]" />
+                            <span><span className="font-bold text-[var(--color-primary)]">"{searchQuery}"</span> 검색 결과 {filteredProducts.length}건</span>
+                            <button onClick={clearSearch} className="ml-auto text-gray-400 hover:text-gray-700">
+                                <X className="w-4 h-4" />
+                            </button>
+                        </div>
+                    )}
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-bold text-gray-900">
-                            {activeCategory} <span className="text-[var(--color-primary)]">{filteredProducts.length}</span>건
+                            {searchQuery ? '검색 결과' : activeCategory} <span className="text-[var(--color-primary)]">{filteredProducts.length}</span>건
                         </h2>
                         <select className="bg-white border border-gray-200 text-sm rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent cursor-pointer">
                             <option>추천순</option>
@@ -319,6 +352,12 @@ const B2CMainPage = () => {
                         <div className="flex justify-center items-center h-64">
                             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-primary)]"></div>
                         </div>
+                    ) : filteredProducts.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center h-64 text-center gap-3 text-gray-400">
+                            <Search className="w-12 h-12 opacity-30" />
+                            <p className="text-base font-medium">검색 결과가 없습니다.</p>
+                            <button onClick={clearSearch} className="text-sm text-[var(--color-primary)] hover:underline">전체 상품 보기</button>
+                        </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {filteredProducts.map((product) => (
@@ -329,11 +368,6 @@ const B2CMainPage = () => {
                                             alt={product.name}
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                         />
-                                        {product.badge && (
-                                            <div className="absolute top-3 left-3 bg-[#FF4500] text-white text-[11px] font-bold px-2 py-1 rounded shadow-sm tracking-wide">
-                                                {product.badge}
-                                            </div>
-                                        )}
                                         <button className="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white hover:text-red-500 shadow-sm text-gray-400">
                                             <Heart className="w-4 h-4" />
                                         </button>
@@ -358,7 +392,7 @@ const B2CMainPage = () => {
                                                     {product.price.toLocaleString()}<span className="text-sm font-medium mr-1 text-gray-500">원</span>
                                                 </span>
                                             </div>
-                                            <button className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-700 hover:bg-[var(--color-primary)] hover:text-white transition-colors border border-gray-200 hover:border-transparent shrink-0">
+                                            <button onClick={() => addItem(product)} className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-700 hover:bg-[var(--color-primary)] hover:text-white transition-colors border border-gray-200 hover:border-transparent shrink-0">
                                                 <ShoppingCart className="w-5 h-5" />
                                             </button>
                                         </div>
