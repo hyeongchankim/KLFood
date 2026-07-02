@@ -30,9 +30,9 @@
         },
         {
             "id": 4,
-            "name": "든든한 일주일 정기구독(A세트)",
+            "name": "정기구독 A세트(2인용)",
             "category": "정기구독",
-            "price": 35000,
+            "price": 9500,
             "imageUrl": "https://images.unsplash.com/photo-1620306161962-f67fec46b0a6?q=80&w=600&auto=format&fit=crop"
         },
         {
@@ -51,17 +51,10 @@
         },
         {
             "id": 7,
-            "name": "알찬 이주일 정기구독(B세트)",
+            "name": "정기구독 B세트(3인용)",
             "category": "정기구독",
-            "price": 65000,
+            "price": 11500,
             "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=600&auto=format&fit=crop"
-        },
-        {
-            "id": 8,
-            "name": "프리미엄 한달 정기구독(C세트)",
-            "category": "정기구독",
-            "price": 120000,
-            "imageUrl": "https://images.unsplash.com/photo-1547496502-affa22d38842?q=80&w=600&auto=format&fit=crop"
         }
     ]
 }

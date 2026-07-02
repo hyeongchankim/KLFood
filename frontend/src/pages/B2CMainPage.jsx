@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ShoppingCart, Star, Clock, Heart, SlidersHorizontal, ChevronDown, Trophy, Sparkles, X, Search } from 'lucide-react';
+﻿import { useState, useEffect, useRef } from 'react';
+import { ShoppingCart, Star, Heart, SlidersHorizontal, ChevronDown, Trophy, Sparkles, X, Search } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useSearchParams } from 'react-router-dom';
 const chamBanchanLogo = '/참반찬_로고.jpeg';
@@ -97,6 +97,41 @@ const newArrivals = [
     }
 ];
 
+const customerReviews = [
+    {
+        id: 1,
+        name: "cayl00",
+        date: "2026-04-07(화)",
+        title: "참반찬 식단",
+        content: "결혼하고 하루 두끼를 다 배달시켜먹으니 한달 식비가 200만원 넘게 나오더라구요^^; 이제 배달음식도 먹고싶지않고.. 그맛이 그맛이라.. 고민하다 참반찬를 찾았습니다 계산해보니 일주일에 세번씩 시켜도 식비가 너무 저렴해져서 좋아요 이번에 처음 주문해보았는데 음식도 다 맛있고 배송도 넘 편하고 빠르네요 참반찬 앞으로도 계속 이용하겠습니다.",
+        imageUrl: "https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=600&auto=format&fit=crop",
+    },
+    {
+        id: 2,
+        name: "ub00",
+        date: "2026-03-12(목)",
+        title: "참반찬 식단",
+        content: "벌써 여러번 주문해서 먹고있어요! 급식처럼 반찬 2,3개 있는 차림을 좋아하는데, 독립하니 이렇게 먹는게 쉽지 않더라구요.. 반찬가게 가서 사는것도 종류가 한정적이라서 질리구.. 그래서 엄청 찾아보다가 참반찬를 알게된 후로 종종 시켜먹고있어요!! 반찬 종류도 다양하고 양도 꽤 많아서 한번 시키면 2,3번 정도 먹을 수 있어용! 워낙 싱겁게 먹는편이라 저한텐 간이 조금 세긴 합니다! 그래서 저염이랑 번갈아가면서 시켜먹구있어요~",
+        imageUrl: "https://images.unsplash.com/photo-1590301157890-4810ed35a4d3?q=80&w=600&auto=format&fit=crop",
+    },
+    {
+        id: 3,
+        name: "rngm00",
+        date: "2026-04-28(화)",
+        title: "참반찬 웰빙 식단",
+        content: "와우! 반찬집 이것저것 찾다가 골라서 처음 먹어보는데요 완전 맛있어요 ㅠ 엄마가 해주신 반찬 같아요!! 두번 나눠먹기 좋아요! 맛없는거 하나도없이 너무 맛있어요 담에 또 시킬게용 ♥",
+        imageUrl: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=600&auto=format&fit=crop",
+    },
+    {
+        id: 4,
+        name: "cjy500",
+        date: "2026-05-15(금)",
+        title: "참반찬 웰빙 식단",
+        content: "일반식 먹다 건강식 시켜봤는데 저염저당 맞나요? 생각보다 너무 맛있어요! 건강식이 일반식보다 맛있다니! 최고에요!",
+        imageUrl: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=600&auto=format&fit=crop",
+    },
+];
+
 const B2CMainPage = () => {
     const [data, setData] = useState({ categories: [], products: [] });
     const [loading, setLoading] = useState(true);
@@ -105,11 +140,30 @@ const B2CMainPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const searchQuery = searchParams.get('q') || '';
     const [bannerIndex, setBannerIndex] = useState(0);
+    const reviewScrollRef = useRef(null);
 
     useEffect(() => {
         const timer = setInterval(() => {
             setBannerIndex(prev => (prev + 1) % themeBanners.length);
         }, 5000);
+        return () => clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            const el = reviewScrollRef.current;
+            if (!el) return;
+
+            const cardWidth = el.firstElementChild?.offsetWidth || 0;
+            const gap = 16;
+            const step = cardWidth + gap;
+            const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - step / 2;
+
+            el.scrollTo({
+                left: atEnd ? 0 : el.scrollLeft + step,
+                behavior: 'smooth',
+            });
+        }, 3000);
         return () => clearInterval(timer);
     }, []);
 
@@ -153,18 +207,35 @@ const B2CMainPage = () => {
                         내일의 건강한 식탁, <br className="md:hidden" />
                         <span className="text-[var(--color-primary)]">매일 새벽 문 앞</span>으로
                     </h1>
-                    <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-8">
-                        전문 영양사가 설계한 맞춤 식단표대로, 당일 조리한 신선한 반찬을 배송해 드립니다. <br className="hidden md:block" />
+                    <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-6">
+                        맞춤 식단표대로, 당일 조리한 신선한 반찬을 배송해 드립니다. <br className="hidden md:block" />
                         매일 아침 식사 고민, 참반찬이 해결해 드릴게요.
                     </p>
-                    <div className="flex flex-wrap justify-center gap-4 text-sm font-medium text-gray-600">
-                        <div className="flex items-center gap-1.5 bg-white/60 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm">
-                            <Clock className="w-4 h-4 text-[var(--color-primary)]" />
-                            밤 10시 전 주문 시 내일 새벽 도착
+
+                    <p className="text-base font-semibold text-gray-800 mb-6">
+                        국(찌개) + 반찬 3가지 또는 4가지를 매일 배달해 드립니다.
+                    </p>
+
+                    <div className="flex flex-col md:flex-row gap-4 items-stretch justify-center mb-8">
+                        <div className="text-left bg-white/70 rounded-2xl px-6 py-5 border border-[#D7E4D4] md:w-72 flex-shrink-0">
+                            <p className="text-sm font-bold text-[var(--color-primary)] mb-2">배송정보</p>
+                            <ul className="text-sm text-gray-700 space-y-1">
+                                <li>· 배송가능 지역: 도봉, 노원, 중랑구 일대</li>
+                                <li>· 배송시간대: 오전 12시 ~ 오전 6시</li>
+                            </ul>
                         </div>
-                        <div className="flex items-center gap-1.5 bg-white/60 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm">
-                            <Star className="w-4 h-4 text-[var(--color-primary)]" />
-                            첫 구매 100원 딜 이벤트 진행 중
+
+                        <div className="text-left bg-white/70 rounded-2xl px-6 py-5 border border-[#D7E4D4] md:w-[420px] flex-shrink-0">
+                            <p className="text-sm font-bold text-[var(--color-primary)] mb-2">이용 안내</p>
+                            <ul className="text-sm text-gray-700 space-y-1.5">
+                                <li>· A세트, B세트는 가정별 배송 횟수에 따라 월말에 청구 됩니다.</li>
+                                <li className="pl-3 text-gray-500 text-xs">(예: 매 주 월~금 / 월,수,금 / 화,목)</li>
+                                <li>· A세트, B세트 외 별도 맞춤 주문 가능합니다.</li>
+                                <li className="pl-3 text-gray-500 text-xs">(예: A/B세트+반찬 또는 국 추가 / 반찬세트 / 국세트 등)</li>
+                                <li>· 토요일, 일요일, 법정 공휴일은 배송이 없습니다.</li>
+                                <li>· 주문 변경 및 취소는 당일 오전 12시 이전까지 전화 또는 문자 남겨주세요.</li>
+                                <li className="pt-1 font-semibold text-gray-800">· 문의: 010-2420-4465</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -403,6 +474,33 @@ const B2CMainPage = () => {
                     )}
                 </main>
             </div>
+
+            {/* Customer Reviews Section */}
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                    내돈내산 고객님의 생생한 후기!!
+                </h2>
+                <div ref={reviewScrollRef} className="flex gap-4 overflow-x-auto pb-8 snap-x scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                    {customerReviews.map((review) => (
+                        <div key={review.id} className="flex-none w-[280px] sm:w-[300px] snap-start bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+                            <div className="aspect-[4/3] bg-gray-100 overflow-hidden">
+                                <img src={review.imageUrl} alt={review.title} className="w-full h-full object-cover" />
+                            </div>
+                            <div className="p-5">
+                                <p className="text-xs text-gray-400 mb-1">
+                                    {review.name} 고객님의
+                                </p>
+                                <p className="text-sm font-bold text-gray-900 mb-3">
+                                    {review.date} {review.title}
+                                </p>
+                                <p className="text-sm text-gray-600 leading-relaxed line-clamp-6">
+                                    {review.content}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
         </div>
     );
 };
