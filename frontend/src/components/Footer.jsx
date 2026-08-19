@@ -1,4 +1,4 @@
-const klfoodLogo = '/KLfood_로고.jpeg';
+const klfoodLogo = '/KLfood_로고.png';
 const chamBanchanLogo = '/참반찬_로고.jpeg';
 
 const Footer = () => {
@@ -8,7 +8,7 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-12">
                     <div className="col-span-1 md:col-span-2">
                         <div className="flex items-center gap-3 mb-6">
-                            <img src={klfoodLogo} alt="KL FOOD 로고" className="h-16 w-auto object-contain" />
+                            <img src={klfoodLogo} alt="KL FOOD 로고" className="h-8 w-auto object-contain" />
                             <span className="font-bold text-xl text-gray-800">KL FOOD</span>
                         </div>
                         <p className="text-sm text-gray-500 mb-6 leading-relaxed">

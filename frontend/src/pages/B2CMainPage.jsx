@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { ShoppingCart, Star, Heart, SlidersHorizontal, ChevronDown, Trophy, Sparkles, X, Search } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useSearchParams } from 'react-router-dom';
@@ -140,30 +140,11 @@ const B2CMainPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const searchQuery = searchParams.get('q') || '';
     const [bannerIndex, setBannerIndex] = useState(0);
-    const reviewScrollRef = useRef(null);
 
     useEffect(() => {
         const timer = setInterval(() => {
             setBannerIndex(prev => (prev + 1) % themeBanners.length);
         }, 5000);
-        return () => clearInterval(timer);
-    }, []);
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            const el = reviewScrollRef.current;
-            if (!el) return;
-
-            const cardWidth = el.firstElementChild?.offsetWidth || 0;
-            const gap = 16;
-            const step = cardWidth + gap;
-            const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - step / 2;
-
-            el.scrollTo({
-                left: atEnd ? 0 : el.scrollLeft + step,
-                behavior: 'smooth',
-            });
-        }, 3000);
         return () => clearInterval(timer);
     }, []);
 
@@ -480,25 +461,27 @@ const B2CMainPage = () => {
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     내돈내산 고객님의 생생한 후기!!
                 </h2>
-                <div ref={reviewScrollRef} className="flex gap-4 overflow-x-auto pb-8 snap-x scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                    {customerReviews.map((review) => (
-                        <div key={review.id} className="flex-none w-[280px] sm:w-[300px] snap-start bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-                            <div className="aspect-[4/3] bg-gray-100 overflow-hidden">
-                                <img src={review.imageUrl} alt={review.title} className="w-full h-full object-cover" />
+                <div className="overflow-hidden">
+                    <div className="flex gap-4 w-max review-marquee-track pb-8">
+                        {[...customerReviews, ...customerReviews].map((review, idx) => (
+                            <div key={`${review.id}-${idx}`} className="flex-none w-[280px] sm:w-[300px] bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+                                <div className="aspect-[4/3] bg-gray-100 overflow-hidden">
+                                    <img src={review.imageUrl} alt={review.title} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="p-5">
+                                    <p className="text-xs text-gray-400 mb-1">
+                                        {review.name} 고객님의
+                                    </p>
+                                    <p className="text-sm font-bold text-gray-900 mb-3">
+                                        {review.date} {review.title}
+                                    </p>
+                                    <p className="text-sm text-gray-600 leading-relaxed line-clamp-6">
+                                        {review.content}
+                                    </p>
+                                </div>
                             </div>
-                            <div className="p-5">
-                                <p className="text-xs text-gray-400 mb-1">
-                                    {review.name} 고객님의
-                                </p>
-                                <p className="text-sm font-bold text-gray-900 mb-3">
-                                    {review.date} {review.title}
-                                </p>
-                                <p className="text-sm text-gray-600 leading-relaxed line-clamp-6">
-                                    {review.content}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </section>
         </div>

@@ -30,3 +30,20 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary-hover);
 }
+
+@keyframes review-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.review-marquee-track {
+  animation: review-marquee 24s linear infinite;
+}
+
+.review-marquee-track:hover {
+  animation-play-state: paused;
+}

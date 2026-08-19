@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Menu, Search, X, Mail, Lock, User, Trash2, Plus, Minus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-const klfoodLogo = '/KLfood_로고.jpeg';
+const klfoodLogo = '/KLfood_로고.png';
 const chamBanchanLogo = '/참반찬_로고.jpeg';
 
 const Header = () => {
@@ -104,7 +104,7 @@ const Header = () => {
                                 <Menu className="w-6 h-6" />
                             </button>
                             <Link to="/" className="flex-shrink-0 flex items-center gap-3">
-                                <img src={klfoodLogo} alt="KL FOOD 로고" className="h-16 w-auto object-contain" />
+                                <img src={klfoodLogo} alt="KL FOOD 로고" className="h-9 w-auto object-contain" />
                                 <span className="font-bold text-2xl text-[var(--color-text-dark)] tracking-tight">
                                     KL FOOD
                                 </span>
