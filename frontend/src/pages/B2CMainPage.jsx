@@ -1,7 +1,7 @@
-﻿import { useState, useEffect } from 'react';
-import { ShoppingCart, Star, Heart, SlidersHorizontal, ChevronDown, Trophy, Sparkles, X, Search } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ShoppingCart, SlidersHorizontal } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { useSearchParams } from 'react-router-dom';
+import CustomerReviews from '../components/CustomerReviews';
 const chamBanchanLogo = '/참반찬_로고.jpeg';
 
 const themeBanners = [
@@ -31,115 +31,11 @@ const themeBanners = [
     }
 ];
 
-const bestSellers = [
-    {
-        id: 1,
-        name: "참반찬 광주별미소고기육전(240g)",
-        price: 14900,
-        rating: 4.8,
-        reviews: 1262,
-        satisfaction: 85,
-        delivery: "2/24(화)",
-        imageUrl: "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-        id: 2,
-        name: "참반찬 모둠두메산나물(219g)",
-        price: 10900,
-        rating: 4.7,
-        reviews: 1505,
-        satisfaction: 92,
-        delivery: "2/24(화)",
-        imageUrl: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-        id: 3,
-        name: "참반찬 고추장소스진미채(180g)",
-        price: 10900,
-        rating: 4.7,
-        reviews: 630,
-        satisfaction: 85,
-        delivery: "2/24(화)",
-        imageUrl: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=600&auto=format&fit=crop",
-    }
-];
-
-const newArrivals = [
-    {
-        id: 1,
-        name: "청어람 한우곱창(200g)",
-        price: 18900,
-        rating: 4.5,
-        reviews: 12,
-        satisfaction: 80,
-        delivery: "2/24(화)",
-        imageUrl: "https://images.unsplash.com/photo-1544378730-8b510ed9c878?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-        id: 2,
-        name: "참반찬 동원참치 미역국(550g)",
-        price: 6500,
-        rating: 4.9,
-        reviews: 124,
-        satisfaction: 98,
-        delivery: "2/24(화)",
-        imageUrl: "https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-        id: 3,
-        name: "참반찬 싱글부대찌개(550g)",
-        price: 8900,
-        rating: 4.6,
-        reviews: 89,
-        satisfaction: 90,
-        delivery: "2/24(화)",
-        imageUrl: "https://images.unsplash.com/photo-1590301157890-4810ed35a4d3?q=80&w=600&auto=format&fit=crop",
-    }
-];
-
-const customerReviews = [
-    {
-        id: 1,
-        name: "cayl00",
-        date: "2026-04-07(화)",
-        title: "참반찬 식단",
-        content: "결혼하고 하루 두끼를 다 배달시켜먹으니 한달 식비가 200만원 넘게 나오더라구요^^; 이제 배달음식도 먹고싶지않고.. 그맛이 그맛이라.. 고민하다 참반찬를 찾았습니다 계산해보니 일주일에 세번씩 시켜도 식비가 너무 저렴해져서 좋아요 이번에 처음 주문해보았는데 음식도 다 맛있고 배송도 넘 편하고 빠르네요 참반찬 앞으로도 계속 이용하겠습니다.",
-        imageUrl: "https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-        id: 2,
-        name: "ub00",
-        date: "2026-03-12(목)",
-        title: "참반찬 식단",
-        content: "벌써 여러번 주문해서 먹고있어요! 급식처럼 반찬 2,3개 있는 차림을 좋아하는데, 독립하니 이렇게 먹는게 쉽지 않더라구요.. 반찬가게 가서 사는것도 종류가 한정적이라서 질리구.. 그래서 엄청 찾아보다가 참반찬를 알게된 후로 종종 시켜먹고있어요!! 반찬 종류도 다양하고 양도 꽤 많아서 한번 시키면 2,3번 정도 먹을 수 있어용! 워낙 싱겁게 먹는편이라 저한텐 간이 조금 세긴 합니다! 그래서 저염이랑 번갈아가면서 시켜먹구있어요~",
-        imageUrl: "https://images.unsplash.com/photo-1590301157890-4810ed35a4d3?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-        id: 3,
-        name: "rngm00",
-        date: "2026-04-28(화)",
-        title: "참반찬 웰빙 식단",
-        content: "와우! 반찬집 이것저것 찾다가 골라서 처음 먹어보는데요 완전 맛있어요 ㅠ 엄마가 해주신 반찬 같아요!! 두번 나눠먹기 좋아요! 맛없는거 하나도없이 너무 맛있어요 담에 또 시킬게용 ♥",
-        imageUrl: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=600&auto=format&fit=crop",
-    },
-    {
-        id: 4,
-        name: "cjy500",
-        date: "2026-05-15(금)",
-        title: "참반찬 웰빙 식단",
-        content: "일반식 먹다 건강식 시켜봤는데 저염저당 맞나요? 생각보다 너무 맛있어요! 건강식이 일반식보다 맛있다니! 최고에요!",
-        imageUrl: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=600&auto=format&fit=crop",
-    },
-];
-
 const B2CMainPage = () => {
-    const [data, setData] = useState({ categories: [], products: [] });
-    const [loading, setLoading] = useState(true);
+    const [bannerIndex, setBannerIndex] = useState(0);
+    const [products, setProducts] = useState([]);
     const [activeCategory, setActiveCategory] = useState('전체');
     const { addItem } = useCart();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const searchQuery = searchParams.get('q') || '';
-    const [bannerIndex, setBannerIndex] = useState(0);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -153,24 +49,17 @@ const B2CMainPage = () => {
             try {
                 const response = await fetch('http://localhost:5000/api/cham-products');
                 const result = await response.json();
-                setData(result);
-                setLoading(false);
+                setProducts(result.products || []);
             } catch (err) {
                 console.error('Failed to fetch products', err);
-                setLoading(false);
             }
         };
 
         fetchProducts();
     }, []);
 
-    const filteredProducts = (data.products || []).filter(p => {
-        const matchCategory = activeCategory === '전체' || p.category === activeCategory;
-        const matchSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchCategory && matchSearch;
-    });
-
-    const clearSearch = () => setSearchParams({});
+    const subscriptionProducts = products.filter(p => p.category === '정기구독');
+    const filteredProducts = activeCategory === '전체' ? subscriptionProducts : subscriptionProducts.filter(p => p.category === activeCategory);
 
     return (
         <div className="bg-gray-50 min-h-screen pb-20">
@@ -257,82 +146,8 @@ const B2CMainPage = () => {
                 </div>
             </section>
 
-            {/* Best Sellers Section */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-                <div className="flex items-center gap-2 mb-6">
-                    <Trophy className="w-6 h-6 text-yellow-500" />
-                    <h2 className="text-2xl font-bold text-gray-900">요즘 이게 잘 나가요</h2>
-                </div>
-                <div className="flex gap-4 overflow-x-auto pb-8 snap-x scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                    {bestSellers.map((product) => (
-                        <div key={product.id} className="flex-none w-[280px] sm:w-[320px] snap-start group cursor-pointer">
-                            <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-gray-100 shadow-sm group-hover:shadow-md transition-shadow">
-                                <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            </div>
-                            <div className="px-1">
-                                <h3 className="font-medium text-gray-800 text-[16px] mb-1.5 line-clamp-1 group-hover:underline decoration-gray-300 underline-offset-4">{product.name}</h3>
-                                <div className="text-xl font-extrabold text-gray-900 mb-2">
-                                    {product.price.toLocaleString()}<span className="text-[15px] font-medium ml-0.5">원</span>
-                                </div>
-                                <div className="flex items-center text-[13px] text-gray-500 mb-1.5 gap-1.5">
-                                    <div className="flex items-center text-gray-800 font-semibold gap-1">
-                                        <Star className="w-3.5 h-3.5 fill-gray-800 text-gray-800" />
-                                        {product.rating} <span className="text-gray-400 font-normal">({product.reviews.toLocaleString()}건)</span>
-                                    </div>
-                                    <span className="text-gray-300">|</span>
-                                    <span>{product.satisfaction}% 만족</span>
-                                </div>
-                                <div className="text-[13px] text-gray-500">
-                                    {product.delivery} 도착 가능
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* New Arrivals Section */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 border-b border-gray-100 pb-12">
-                <div className="flex items-center gap-2 mb-6">
-                    <Sparkles className="w-6 h-6 text-yellow-400" />
-                    <h2 className="text-2xl font-bold text-gray-900">새로 들어왔어요</h2>
-                </div>
-                <div className="flex gap-4 overflow-x-auto pb-8 snap-x scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                    {newArrivals.map((product) => (
-                        <div key={product.id} className="flex-none w-[280px] sm:w-[320px] snap-start group cursor-pointer">
-                            <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-gray-100 shadow-sm group-hover:shadow-md transition-shadow">
-                                <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            </div>
-                            <div className="px-1">
-                                <h3 className="font-medium text-gray-800 text-[16px] mb-1.5 line-clamp-1 group-hover:underline decoration-gray-300 underline-offset-4">{product.name}</h3>
-                                <div className="text-xl font-extrabold text-gray-900 mb-2">
-                                    {product.price.toLocaleString()}<span className="text-[15px] font-medium ml-0.5">원</span>
-                                </div>
-                                {product.reviews > 0 ? (
-                                    <div className="flex items-center text-[13px] text-gray-500 mb-1.5 gap-1.5">
-                                        <div className="flex items-center text-gray-800 font-semibold gap-1">
-                                            <Star className="w-3.5 h-3.5 fill-gray-800 text-gray-800" />
-                                            {product.rating} <span className="text-gray-400 font-normal">({product.reviews.toLocaleString()}건)</span>
-                                        </div>
-                                        <span className="text-gray-300">|</span>
-                                        <span>{product.satisfaction}% 만족</span>
-                                    </div>
-                                ) : (
-                                    <div className="h-[21px] mb-1.5"></div>
-                                )}
-                                <div className="text-[13px] text-gray-500">
-                                    {product.delivery} 도착 가능
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* Main Content Area */}
+            {/* Category Filter + Subscription Products */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 flex flex-col lg:flex-row gap-8">
-
-                {/* Sidebar Filter */}
                 <aside className="lg:w-64 flex-shrink-0">
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-28">
                         <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
@@ -341,10 +156,9 @@ const B2CMainPage = () => {
                                 카테고리 필터
                             </h2>
                         </div>
-
                         <ul className="space-y-1.5">
-                            {data.categories?.map((cat, idx) => (
-                                <li key={idx}>
+                            {['전체', '정기구독'].map((cat) => (
+                                <li key={cat}>
                                     <button
                                         onClick={() => setActiveCategory(cat)}
                                         className={`w-full text-left px-4 py-3 rounded-xl transition-all font-medium text-sm flex justify-between items-center ${activeCategory === cat
@@ -358,132 +172,39 @@ const B2CMainPage = () => {
                                 </li>
                             ))}
                         </ul>
-
-                        <div className="mt-8 border-t border-gray-100 pt-6">
-                            <h3 className="font-bold text-gray-900 mb-4 flex justify-between items-center text-sm">
-                                가격대
-                                <ChevronDown className="w-4 h-4 text-gray-400" />
-                            </h3>
-                            <div className="space-y-3">
-                                {['전체', '1만원 이하', '1만원 ~ 3만원', '3만원 이상'].map((price, idx) => (
-                                    <label key={idx} className="flex items-center gap-3 cursor-pointer group">
-                                        <input type="radio" name="price" className="w-4 h-4 text-[var(--color-primary)] border-gray-300 focus:ring-[var(--color-primary)] accent-[var(--color-primary)]" defaultChecked={idx === 0} />
-                                        <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">{price}</span>
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
                     </div>
                 </aside>
 
-                {/* Product Grid */}
                 <main className="flex-1">
-                    {searchQuery && (
-                        <div className="flex items-center gap-2 mb-4 px-4 py-2.5 bg-orange-50 border border-orange-100 rounded-xl text-sm text-gray-700">
-                            <Search className="w-4 h-4 text-[var(--color-primary)]" />
-                            <span><span className="font-bold text-[var(--color-primary)]">"{searchQuery}"</span> 검색 결과 {filteredProducts.length}건</span>
-                            <button onClick={clearSearch} className="ml-auto text-gray-400 hover:text-gray-700">
-                                <X className="w-4 h-4" />
-                            </button>
-                        </div>
-                    )}
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-xl font-bold text-gray-900">
-                            {searchQuery ? '검색 결과' : activeCategory} <span className="text-[var(--color-primary)]">{filteredProducts.length}</span>건
-                        </h2>
-                        <select className="bg-white border border-gray-200 text-sm rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent cursor-pointer">
-                            <option>추천순</option>
-                            <option>신상품순</option>
-                            <option>판매량순</option>
-                            <option>낮은가격순</option>
-                            <option>높은가격순</option>
-                        </select>
-                    </div>
-
-                    {loading ? (
-                        <div className="flex justify-center items-center h-64">
-                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-primary)]"></div>
-                        </div>
-                    ) : filteredProducts.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center h-64 text-center gap-3 text-gray-400">
-                            <Search className="w-12 h-12 opacity-30" />
-                            <p className="text-base font-medium">검색 결과가 없습니다.</p>
-                            <button onClick={clearSearch} className="text-sm text-[var(--color-primary)] hover:underline">전체 상품 보기</button>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {filteredProducts.map((product) => (
-                                <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group flex flex-col">
-                                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
-                                        <img
-                                            src={product.imageUrl}
-                                            alt={product.name}
-                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                        />
-                                        <button className="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white hover:text-red-500 shadow-sm text-gray-400">
-                                            <Heart className="w-4 h-4" />
+                    <h2 className="text-xl font-bold text-gray-900 mb-6">
+                        {activeCategory} <span className="text-[var(--color-primary)]">{filteredProducts.length}</span>건
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredProducts.map((product) => (
+                            <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col">
+                                <div className="aspect-[4/3] overflow-hidden bg-gray-100">
+                                    <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="p-5 flex-1 flex flex-col">
+                                    <span className="text-xs font-semibold text-orange-500 mb-1.5">{product.category}</span>
+                                    <h3 className="font-bold text-gray-900 text-[17px] mb-1 line-clamp-1">{product.name}</h3>
+                                    <p className="text-gray-400 text-xs mb-4 line-clamp-1">신선한 재료로 만든 든든한 한 끼</p>
+                                    <div className="mt-auto flex justify-between items-end">
+                                        <span className="text-xl font-extrabold text-gray-900 tracking-tight">
+                                            {product.price.toLocaleString()}<span className="text-sm font-medium mr-1 text-gray-500">원</span>
+                                        </span>
+                                        <button onClick={() => addItem(product)} className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-700 hover:bg-[var(--color-primary)] hover:text-white transition-colors border border-gray-200 hover:border-transparent shrink-0">
+                                            <ShoppingCart className="w-5 h-5" />
                                         </button>
-                                        {/* Dark overlay on hover with quick action */}
-                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                            <button className="bg-white text-gray-900 text-sm font-bold px-6 py-2 rounded-full hover:bg-[var(--color-primary)] hover:text-white transition-colors transform translate-y-4 group-hover:translate-y-0 duration-300">
-                                                미리보기
-                                            </button>
-                                        </div>
                                     </div>
-
-                                    <div className="p-5 flex-1 flex flex-col">
-                                        <span className="text-xs font-semibold text-orange-500 mb-1.5">{product.category}</span>
-                                        <h3 className="font-bold text-gray-900 text-[17px] mb-1 line-clamp-1 group-hover:text-[var(--color-primary)] transition-colors">
-                                            {product.name}
-                                        </h3>
-                                        <p className="text-gray-400 text-xs mb-4 line-clamp-1">신선한 재료로 만든 든든한 한 끼</p>
-
-                                        <div className="mt-auto flex justify-between items-end">
-                                            <div className="flex flex-col">
-                                                <span className="text-xl font-extrabold text-gray-900 tracking-tight">
-                                                    {product.price.toLocaleString()}<span className="text-sm font-medium mr-1 text-gray-500">원</span>
-                                                </span>
-                                            </div>
-                                            <button onClick={() => addItem(product)} className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-700 hover:bg-[var(--color-primary)] hover:text-white transition-colors border border-gray-200 hover:border-transparent shrink-0">
-                                                <ShoppingCart className="w-5 h-5" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </main>
-            </div>
-
-            {/* Customer Reviews Section */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                    내돈내산 고객님의 생생한 후기!!
-                </h2>
-                <div className="overflow-hidden">
-                    <div className="flex gap-4 w-max review-marquee-track pb-8">
-                        {[...customerReviews, ...customerReviews].map((review, idx) => (
-                            <div key={`${review.id}-${idx}`} className="flex-none w-[280px] sm:w-[300px] bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-                                <div className="aspect-[4/3] bg-gray-100 overflow-hidden">
-                                    <img src={review.imageUrl} alt={review.title} className="w-full h-full object-cover" />
-                                </div>
-                                <div className="p-5">
-                                    <p className="text-xs text-gray-400 mb-1">
-                                        {review.name} 고객님의
-                                    </p>
-                                    <p className="text-sm font-bold text-gray-900 mb-3">
-                                        {review.date} {review.title}
-                                    </p>
-                                    <p className="text-sm text-gray-600 leading-relaxed line-clamp-6">
-                                        {review.content}
-                                    </p>
                                 </div>
                             </div>
                         ))}
                     </div>
-                </div>
-            </section>
+                </main>
+            </div>
+
+            <CustomerReviews />
         </div>
     );
 };

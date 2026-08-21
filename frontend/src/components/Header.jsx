@@ -134,12 +134,36 @@ const Header = () => {
                                     </Link>
 
                                     <div className="absolute top-full left-1/2 -translate-x-1/2 pt-1 opacity-0 invisible translate-y-1 group-hover/menu:opacity-100 group-hover/menu:visible group-hover/menu:translate-y-0 transition-all duration-200 z-50">
-                                        <div className="bg-white rounded-xl shadow-lg border border-gray-100 py-2 min-w-[140px]">
+                                        <div className="bg-white rounded-xl shadow-lg border border-gray-100 py-2 min-w-[160px]">
+                                            <Link
+                                                to="/cham-banchan"
+                                                className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[var(--color-primary)] hover:bg-orange-50 transition-colors whitespace-nowrap"
+                                            >
+                                                정기 식단
+                                            </Link>
                                             <Link
                                                 to="/cham-banchan/meal-plan"
                                                 className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[var(--color-primary)] hover:bg-orange-50 transition-colors whitespace-nowrap"
                                             >
                                                 식단표
+                                            </Link>
+                                            <Link
+                                                to="/cham-banchan/lunchbox"
+                                                className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[var(--color-primary)] hover:bg-orange-50 transition-colors whitespace-nowrap"
+                                            >
+                                                정기 도시락
+                                            </Link>
+                                            <Link
+                                                to="/cham-banchan/single"
+                                                className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[var(--color-primary)] hover:bg-orange-50 transition-colors whitespace-nowrap"
+                                            >
+                                                단품 반찬
+                                            </Link>
+                                            <Link
+                                                to="/cham-banchan/single/salad"
+                                                className="block pl-7 pr-4 py-2.5 text-sm font-medium text-gray-500 hover:text-[var(--color-primary)] hover:bg-orange-50 transition-colors whitespace-nowrap"
+                                            >
+                                                └ 샐러드
                                             </Link>
                                         </div>
                                     </div>
