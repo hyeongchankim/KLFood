@@ -42,13 +42,13 @@ const B2BMainPage = () => {
     return (
         <div className="bg-[var(--color-background-warm)] w-full">
             {/* Hero Section */}
-            <section className="relative overflow-hidden bg-gradient-to-br from-[#F2F7EC] to-[#E7F0DF] py-20 lg:py-32">
-                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-[#CDE0C3] opacity-40 blur-3xl mix-blend-multiply"></div>
+            <section className="relative overflow-hidden bg-gradient-to-br from-[#F3ECE6] to-[#EDE3D8] py-20 lg:py-32">
+                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-[#D8B8AC] opacity-40 blur-3xl mix-blend-multiply"></div>
                 <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-[#E0EEC8] opacity-40 blur-3xl mix-blend-multiply"></div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center gap-12">
                     <div className="flex-1 text-center md:text-left">
-                        <span className="inline-block py-1 px-3 rounded-full bg-[#E8F0E0] text-[var(--color-primary)] font-bold text-sm tracking-wide mb-4">
+                        <span className="inline-block py-1 px-3 rounded-full bg-[#F0E2DC] text-[var(--color-primary)] font-bold text-sm tracking-wide mb-4">
                             신선한 식재료, 정직한 맛
                         </span>
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
@@ -100,7 +100,7 @@ const B2BMainPage = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                         {/* Feature 1 */}
-                        <div className="bg-[#F3F8ED] rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-[#DCE9D5]">
+                        <div className="bg-[#F5EFE7] rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-[#E5DFD3]">
                             <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-orange-500">
                                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
@@ -113,7 +113,7 @@ const B2BMainPage = () => {
                         </div>
 
                         {/* Feature 2 */}
-                        <div className="bg-[#F8FBF2] rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-[#E4EFD8]">
+                        <div className="bg-[#FAF6F0] rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-[#EBE0D3]">
                             <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-red-500">
                                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />

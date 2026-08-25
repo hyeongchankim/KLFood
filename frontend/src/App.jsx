@@ -7,6 +7,8 @@ import MealPlanPage from './pages/MealPlanPage';
 import MyPage from './pages/MyPage';
 import ComingSoonPage from './pages/ComingSoonPage';
 import SingleMenuPage from './pages/SingleMenuPage';
+import LunchboxPage from './pages/LunchboxPage';
+import OrderInfoPage from './pages/OrderInfoPage';
 import { CartProvider } from './context/CartContext';
 
 function App() {
@@ -20,9 +22,10 @@ function App() {
             <Route path="/" element={<B2BMainPage />} />
             <Route path="/cham-banchan" element={<B2CMainPage />} />
             <Route path="/cham-banchan/meal-plan" element={<MealPlanPage />} />
-            <Route path="/cham-banchan/lunchbox" element={<ComingSoonPage title="정기 도시락" />} />
+            <Route path="/cham-banchan/lunchbox" element={<LunchboxPage />} />
             <Route path="/cham-banchan/single" element={<SingleMenuPage />} />
             <Route path="/cham-banchan/single/salad" element={<ComingSoonPage title="샐러드" />} />
+            <Route path="/order-info" element={<OrderInfoPage />} />
             <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </main>

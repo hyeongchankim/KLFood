@@ -1,47 +1,49 @@
-import { useState, useEffect, useRef } from 'react';
-import { ShoppingCart, Heart, SlidersHorizontal, ChevronDown, ArrowRight, ArrowLeft, X, Search } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { ShoppingCart, Heart, SlidersHorizontal, ChevronDown, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { useSearchParams } from 'react-router-dom';
 import CustomerReviews from '../components/CustomerReviews';
 
-const SingleMenuPage = () => {
-    const [data, setData] = useState({ categories: [], products: [] });
-    const [loading, setLoading] = useState(true);
+const categories = ['전체', '기본 도시락', '스페셜 도시락', '채식 도시락', '추가메뉴', '품목', '곁들임식품'];
+
+const products = [
+    { id: 'lb-1', category: '기본 도시락', name: '제육김치도시락', price: 8900, imageUrl: 'https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-2', category: '기본 도시락', name: '불고기더블고기도시락', price: 9900, imageUrl: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-3', category: '기본 도시락', name: '고등어구이한상도시락', price: 10900, imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-4', category: '기본 도시락', name: '수제돈까스도시락', price: 8500, imageUrl: 'https://images.unsplash.com/photo-1541014741259-de529411b96a?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-5', category: '기본 도시락', name: '오징어볶음도시락', price: 9500, imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-6', category: '기본 도시락', name: '닭갈비도시락', price: 9900, imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-7', category: '기본 도시락', name: '함박스테이크도시락', price: 10500, imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-8', category: '기본 도시락', name: '숙주불고기도시락', price: 9200, imageUrl: 'https://images.unsplash.com/photo-1590301157890-4810ed35a4d3?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-s1', category: '스페셜 도시락', name: '한우불고기 스페셜도시락', price: 16900, imageUrl: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-s2', category: '스페셜 도시락', name: '전복장 스페셜도시락', price: 18900, imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-s3', category: '스페셜 도시락', name: '연어스테이크 스페셜도시락', price: 15900, imageUrl: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-s4', category: '스페셜 도시락', name: '갈비찜 스페셜도시락', price: 17900, imageUrl: 'https://images.unsplash.com/photo-1544378730-8b510ed9c878?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-v1', category: '채식 도시락', name: '두부스테이크 채식도시락', price: 8900, imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-v2', category: '채식 도시락', name: '나물비빔 채식도시락', price: 8500, imageUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-v3', category: '채식 도시락', name: '병아리콩카레 채식도시락', price: 9500, imageUrl: 'https://images.unsplash.com/photo-1583224964978-2257b960c3d3?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-a1', category: '추가메뉴', name: '계란말이 추가', price: 2000, imageUrl: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-a2', category: '추가메뉴', name: '치즈 추가', price: 1500, imageUrl: 'https://images.unsplash.com/photo-1622597467836-f3285f2131b8?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-a3', category: '추가메뉴', name: '흑미밥 변경', price: 1000, imageUrl: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-a4', category: '추가메뉴', name: '미역국 추가', price: 2500, imageUrl: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-a5', category: '추가메뉴', name: '순두부찌개 추가', price: 3000, imageUrl: 'https://images.unsplash.com/photo-1583224964978-2257b960c3d3?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-a6', category: '추가메뉴', name: '김치 추가', price: 1000, imageUrl: 'https://images.unsplash.com/photo-1590301157890-4810ed35a4d3?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-i1', category: '품목', name: '일회용 수저세트', price: 300, imageUrl: 'https://images.unsplash.com/photo-1589187151053-5ec8818e661b?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-i2', category: '품목', name: '보냉백', price: 2000, imageUrl: 'https://images.unsplash.com/photo-1610450949065-1f2841536c88?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-i3', category: '품목', name: '아이스팩', price: 500, imageUrl: 'https://images.unsplash.com/photo-1610450949065-1f2841536c88?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-i4', category: '품목', name: '종이컵 2개', price: 500, imageUrl: 'https://images.unsplash.com/photo-1589187151053-5ec8818e661b?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-d1', category: '곁들임식품', name: '단무지', price: 800, imageUrl: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-d2', category: '곁들임식품', name: '요구르트', price: 1200, imageUrl: 'https://images.unsplash.com/photo-1622597467836-f3285f2131b8?q=80&w=300&auto=format&fit=crop' },
+    { id: 'lb-d3', category: '곁들임식품', name: '바나나', price: 1000, imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=300&auto=format&fit=crop' },
+];
+
+const LunchboxPage = () => {
     const [activeCategory, setActiveCategory] = useState('전체');
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const { addItem } = useCart();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const searchQuery = searchParams.get('q') || '';
     const newArrivalsRef = useRef(null);
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/api/cham-products');
-                const result = await response.json();
-                setData(result);
-                setLoading(false);
-            } catch (err) {
-                console.error('Failed to fetch products', err);
-                setLoading(false);
-            }
-        };
-
-        fetchProducts();
-    }, []);
-
-    const categories = (data.categories || []).filter(cat => cat !== '정기구독');
-    const singleProducts = (data.products || []).filter(p => p.category !== '정기구독');
-
-    const filteredProducts = singleProducts.filter(p => {
-        const matchCategory = activeCategory === '전체' || p.category === activeCategory;
-        const matchSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchCategory && matchSearch;
-    });
-
-    const newArrivals = singleProducts.slice(-6);
-
-    const clearSearch = () => setSearchParams({});
+    const filteredProducts = activeCategory === '전체' ? products : products.filter((p) => p.category === activeCategory);
+    const newArrivals = products.slice(-6);
 
     const scrollNewArrivals = (dir) => {
         const el = newArrivalsRef.current;
@@ -54,10 +56,10 @@ const SingleMenuPage = () => {
             {/* Page Header */}
             <section className="max-w-3xl mx-auto text-center px-4 pt-16 pb-10">
                 <h1 className="text-4xl sm:text-5xl mb-4">
-                    단품 <span className="italic text-[var(--color-primary)]">반찬</span>
+                    정기 <span className="italic text-[var(--color-primary)]">도시락</span>
                 </h1>
                 <p className="text-gray-500">
-                    엄선된 재료로 정성껏 만든 참반찬의 단품 메뉴를 만나보세요.
+                    매일 아침 새롭게 준비하는 참반찬 도시락 메뉴를 확인해 보세요.
                 </p>
             </section>
 
@@ -105,29 +107,13 @@ const SingleMenuPage = () => {
                         </div>
                     )}
                 </div>
-
-                {searchQuery && (
-                    <div className="flex items-center gap-2 pb-4 text-sm text-gray-700">
-                        <Search className="w-4 h-4 text-[var(--color-primary)]" />
-                        <span><span className="font-bold text-[var(--color-primary)]">"{searchQuery}"</span> 검색 결과</span>
-                        <button onClick={clearSearch} className="text-gray-400 hover:text-gray-700">
-                            <X className="w-4 h-4" />
-                        </button>
-                    </div>
-                )}
             </div>
 
             {/* Product Grid */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                {loading ? (
-                    <div className="flex justify-center items-center h-64">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-primary)]"></div>
-                    </div>
-                ) : filteredProducts.length === 0 ? (
+                {filteredProducts.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-64 text-center gap-3 text-gray-400">
-                        <Search className="w-12 h-12 opacity-30" />
-                        <p className="text-base font-medium">검색 결과가 없습니다.</p>
-                        <button onClick={clearSearch} className="text-sm text-[var(--color-primary)] hover:underline">전체 상품 보기</button>
+                        <p className="text-base font-medium">상품이 없습니다.</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
@@ -169,8 +155,8 @@ const SingleMenuPage = () => {
             {newArrivals.length > 0 && (
                 <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col lg:flex-row gap-10">
                     <div className="lg:w-64 flex-shrink-0">
-                        <h2 className="text-3xl mb-3">New <span className="italic">Arrivals</span></h2>
-                        <p className="text-sm text-gray-500 mb-6">새로 들어온 참반찬 메뉴를 확인해 보세요.</p>
+                        <h2 className="text-3xl mb-3">New <span className="italic">도시락</span></h2>
+                        <p className="text-sm text-gray-500 mb-6">새로 들어온 도시락 메뉴를 확인해 보세요.</p>
                         <button
                             onClick={() => setActiveCategory('전체')}
                             className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white text-sm font-bold px-6 py-3 rounded-full transition-colors mb-6"
@@ -218,4 +204,4 @@ const SingleMenuPage = () => {
     );
 };
 
-export default SingleMenuPage;
+export default LunchboxPage;

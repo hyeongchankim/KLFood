@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Menu, Search, X, Mail, Lock, User, Trash2, Plus, Minus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import OrderDetailsFields, { initialOrderDetails } from './OrderDetailsFields';
 const klfoodLogo = '/KLfood_로고.png';
 const chamBanchanLogo = '/참반찬_로고.jpeg';
 
@@ -15,6 +16,7 @@ const Header = () => {
     const [authMode, setAuthMode] = useState('login');
     const [user, setUser] = useState(null);
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+    const [orderDetails, setOrderDetails] = useState(initialOrderDetails);
     const [authMessage, setAuthMessage] = useState('');
     const [authError, setAuthError] = useState('');
     const { items, removeItem, updateQty, totalCount, totalPrice } = useCart();
@@ -40,6 +42,7 @@ const Header = () => {
         setAuthMessage('');
         setAuthError('');
         setFormData({ name: '', email: '', password: '' });
+        setOrderDetails(initialOrderDetails);
         setIsAuthOpen(true);
     };
 
@@ -48,11 +51,16 @@ const Header = () => {
         setAuthMessage('');
         setAuthError('');
         setFormData({ name: '', email: '', password: '' });
+        setOrderDetails(initialOrderDetails);
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleOrderDetailsChange = (field, value) => {
+        setOrderDetails((prev) => ({ ...prev, [field]: value }));
     };
 
     const handleSubmit = async (e) => {
@@ -64,7 +72,7 @@ const Header = () => {
             const response = await fetch(`http://localhost:5000/api/auth/${authMode === 'register' ? 'register' : 'login'}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(authMode === 'register' ? { ...formData, ...orderDetails } : formData),
             });
 
             const result = await response.json();
@@ -94,9 +102,28 @@ const Header = () => {
         setUser(null);
     };
 
+    const categoryLinks = [
+        { to: '/', label: 'B2B 대량급식' },
+        { to: '/cham-banchan', label: '정기 식단' },
+        { to: '/cham-banchan/meal-plan', label: '식단표' },
+        { to: '/cham-banchan/lunchbox', label: '정기 도시락' },
+        { to: '/cham-banchan/single', label: '단품 반찬' },
+    ];
+    const tickerItems = ['매일 새벽 배송', '프리미엄 식재료', '전국 대량급식 가능', 'HACCP 인증 시설'];
+
     return (
         <>
-            <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-[var(--color-border)]">
+            {/* Top announcement ticker */}
+            <div className="sticky top-0 z-50">
+                <div className="bg-[#6B714B] text-white text-xs font-medium overflow-hidden">
+                    <div className="flex gap-16 w-max py-2 ticker-track">
+                        {[...tickerItems, ...tickerItems].map((text, idx) => (
+                            <span key={idx} className="whitespace-nowrap">{text}</span>
+                        ))}
+                    </div>
+                </div>
+
+            <header className="bg-white shadow-sm border-b border-[var(--color-border)]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-20">
                         <div className="flex items-center gap-6">
@@ -119,55 +146,18 @@ const Header = () => {
                                 >
                                     B2B 대량급식
                                 </Link>
-                                <div className="relative group/menu h-full flex items-center">
-                                    <Link
-                                        to="/cham-banchan"
-                                        className={`h-full flex items-center text-[17px] font-medium transition-colors ${!isB2B
-                                            ? 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]'
-                                            : 'text-[var(--color-text-gray)] hover:text-[#333]'
-                                            }`}
-                                    >
-                                        <span className="flex items-center gap-2.5">
-                                            <img src={chamBanchanLogo} alt="참반찬 로고" className="h-7 w-7 object-contain" />
-                                            <span>참반찬</span>
-                                        </span>
-                                    </Link>
-
-                                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-1 opacity-0 invisible translate-y-1 group-hover/menu:opacity-100 group-hover/menu:visible group-hover/menu:translate-y-0 transition-all duration-200 z-50">
-                                        <div className="bg-white rounded-xl shadow-lg border border-gray-100 py-2 min-w-[160px]">
-                                            <Link
-                                                to="/cham-banchan"
-                                                className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[var(--color-primary)] hover:bg-orange-50 transition-colors whitespace-nowrap"
-                                            >
-                                                정기 식단
-                                            </Link>
-                                            <Link
-                                                to="/cham-banchan/meal-plan"
-                                                className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[var(--color-primary)] hover:bg-orange-50 transition-colors whitespace-nowrap"
-                                            >
-                                                식단표
-                                            </Link>
-                                            <Link
-                                                to="/cham-banchan/lunchbox"
-                                                className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[var(--color-primary)] hover:bg-orange-50 transition-colors whitespace-nowrap"
-                                            >
-                                                정기 도시락
-                                            </Link>
-                                            <Link
-                                                to="/cham-banchan/single"
-                                                className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[var(--color-primary)] hover:bg-orange-50 transition-colors whitespace-nowrap"
-                                            >
-                                                단품 반찬
-                                            </Link>
-                                            <Link
-                                                to="/cham-banchan/single/salad"
-                                                className="block pl-7 pr-4 py-2.5 text-sm font-medium text-gray-500 hover:text-[var(--color-primary)] hover:bg-orange-50 transition-colors whitespace-nowrap"
-                                            >
-                                                └ 샐러드
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
+                                <Link
+                                    to="/cham-banchan"
+                                    className={`h-full flex items-center text-[17px] font-medium transition-colors ${!isB2B
+                                        ? 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]'
+                                        : 'text-[var(--color-text-gray)] hover:text-[#333]'
+                                        }`}
+                                >
+                                    <span className="flex items-center gap-2.5">
+                                        <img src={chamBanchanLogo} alt="참반찬 로고" className="h-7 w-7 object-contain" />
+                                        <span>참반찬</span>
+                                    </span>
+                                </Link>
                             </nav>
                         </div>
 
@@ -233,6 +223,22 @@ const Header = () => {
                     </div>
                 </div>
             </header>
+
+            {/* Category bar */}
+            <nav className="hidden md:block bg-[#FAF7F2] border-b border-[var(--color-border)]">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-8 h-11">
+                    {categoryLinks.map((link) => (
+                        <Link
+                            key={link.to}
+                            to={link.to}
+                            className="text-sm font-medium text-[var(--color-text-gray)] hover:text-[var(--color-primary)] transition-colors"
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+                </div>
+            </nav>
+            </div>
 
             {/* Cart Drawer */}
             {isCartOpen && (
@@ -303,7 +309,7 @@ const Header = () => {
 
             {isAuthOpen && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 px-4">
-                    <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+                    <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
                         <div className="flex items-start justify-between gap-3">
                             <div>
                                 <h3 className="text-xl font-bold text-gray-900">
@@ -364,6 +370,10 @@ const Header = () => {
                                     className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-orange-100"
                                 />
                             </div>
+
+                            {authMode === 'register' && (
+                                <OrderDetailsFields values={orderDetails} onChange={handleOrderDetailsChange} />
+                            )}
 
                             {authError && <p className="text-sm text-red-600">{authError}</p>}
                             {authMessage && <p className="text-sm text-green-600">{authMessage}</p>}

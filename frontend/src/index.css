@@ -1,19 +1,24 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
 
 @theme {
-  --color-primary: #2D7A5F;
-  --color-primary-hover: #236249;
-  --color-secondary: #FF7A59;
-  --color-background-warm: #F7F9F0;
-  --color-text-dark: #22312B;
-  --color-text-gray: #5D6A63;
-  --color-border: #D7E4D4;
+  --color-primary: #A97164;
+  --color-primary-hover: #8F5C50;
+  --color-secondary: #B7786B;
+  --color-background-warm: #F8F6F0;
+  --color-text-dark: #4A4238;
+  --color-text-gray: #726A63;
+  --color-border: #E5DFD3;
 }
 
 body {
   font-family: 'Pretendard', 'Inter', -apple-system, sans-serif;
   background-color: var(--color-background-warm);
   color: var(--color-text-dark);
+}
+
+h1, h2, h3 {
+  font-family: 'DM Serif Display', serif;
 }
 
 /* Custom Scrollbar for better aesthetics */
@@ -42,6 +47,10 @@ body {
 
 .review-marquee-track {
   animation: review-marquee 24s linear infinite;
+}
+
+.ticker-track {
+  animation: review-marquee 18s linear infinite;
 }
 
 .review-marquee-track:hover {

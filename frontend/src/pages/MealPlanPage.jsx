@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react';
 
 const weekdayLabels = ['일', '월', '화', '수', '목', '금', '토'];
 
 const MealPlanPage = () => {
+    const navigate = useNavigate();
     const today = new Date();
     const [viewDate, setViewDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
     const [selectedDate, setSelectedDate] = useState(today);
@@ -57,9 +59,9 @@ const MealPlanPage = () => {
 
     return (
         <div className="bg-gray-50 min-h-screen pb-20">
-            <section className="bg-[#F2F7EC] py-12 px-4">
+            <section className="bg-[#F3ECE6] py-12 px-4">
                 <div className="max-w-5xl mx-auto text-center">
-                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-white text-[var(--color-primary)] font-bold text-sm rounded-full shadow-sm mb-4 border border-[#D7E4D4]">
+                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-white text-[var(--color-primary)] font-bold text-sm rounded-full shadow-sm mb-4 border border-[#E5DFD3]">
                         <CalendarDays className="w-4 h-4" />
                         식단표
                     </span>
@@ -159,8 +161,11 @@ const MealPlanPage = () => {
                                 </li>
                             </ul>
 
-                            <button className="w-full mt-8 bg-[var(--color-primary)] hover:bg-[#ff7a59] text-white font-bold py-3 rounded-xl transition-colors text-sm">
-                                이 식단으로 주문하기
+                            <button
+                                onClick={() => navigate('/order-info')}
+                                className="w-full mt-8 bg-[var(--color-primary)] hover:bg-[#ff7a59] text-white font-bold py-3 rounded-xl transition-colors text-sm"
+                            >
+                                오늘부터 주문하기
                             </button>
                         </>
                     ) : (
