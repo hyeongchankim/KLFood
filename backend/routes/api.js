@@ -8,5 +8,9 @@ router.post('/auth/register', apiController.registerUser);
 router.post('/auth/login', apiController.loginUser);
 router.get('/meal-plan', apiController.getMealPlan);
 router.post('/meal-plan', apiController.upsertMealPlanDay);
+router.post('/orders', apiController.createOrder);
+router.get('/orders', apiController.getOrders);
+router.patch('/orders/:id/count', apiController.updateOrderCount);
+router.post('/orders/:id/invoice', apiController.sendInvoice);
 
 module.exports = router;

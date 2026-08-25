@@ -9,6 +9,7 @@ import ComingSoonPage from './pages/ComingSoonPage';
 import SingleMenuPage from './pages/SingleMenuPage';
 import LunchboxPage from './pages/LunchboxPage';
 import OrderInfoPage from './pages/OrderInfoPage';
+import AdminPage from './pages/AdminPage';
 import { CartProvider } from './context/CartContext';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/cham-banchan/single" element={<SingleMenuPage />} />
             <Route path="/cham-banchan/single/salad" element={<ComingSoonPage title="샐러드" />} />
             <Route path="/order-info" element={<OrderInfoPage />} />
+            <Route path="/admin" element={<AdminPage />} />
             <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </main>

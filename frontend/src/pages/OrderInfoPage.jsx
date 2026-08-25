@@ -11,14 +11,33 @@ const OrderInfoPage = () => {
     const [name, setName] = useState('');
     const [details, setDetails] = useState({ ...initialOrderDetails, menuChoice: preselectedMenu });
     const [submitted, setSubmitted] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState('');
 
     const handleChange = (field, value) => {
         setDetails((prev) => ({ ...prev, [field]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitted(true);
+        setError('');
+        setSubmitting(true);
+        try {
+            const response = await fetch('http://localhost:5000/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, ...details }),
+            });
+            if (!response.ok) {
+                const result = await response.json();
+                throw new Error(result.message || '주문 접수 중 오류가 발생했습니다.');
+            }
+            setSubmitted(true);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     if (submitted) {
@@ -68,11 +87,14 @@ const OrderInfoPage = () => {
 
                     <OrderDetailsFields values={details} onChange={handleChange} />
 
+                    {error && <p className="text-sm text-red-600">{error}</p>}
+
                     <button
                         type="submit"
-                        className="w-full rounded-xl bg-[var(--color-primary)] px-4 py-3.5 text-sm font-bold text-white transition-colors hover:bg-[var(--color-primary-hover)]"
+                        disabled={submitting}
+                        className="w-full rounded-xl bg-[var(--color-primary)] px-4 py-3.5 text-sm font-bold text-white transition-colors hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
                     >
-                        오늘부터 주문하기
+                        {submitting ? '접수 중...' : '오늘부터 주문하기'}
                     </button>
                 </form>
             </div>
