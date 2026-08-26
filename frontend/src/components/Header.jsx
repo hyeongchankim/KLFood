@@ -28,6 +28,10 @@ const Header = () => {
         navigate(`/cham-banchan?q=${encodeURIComponent(q)}`);
     };
 
+    // link only shows for a real admin account — logging in with a non-admin account or just
+    // knowing the /admin passcode is not enough
+    const isAdmin = !!user?.isAdmin;
+
     useEffect(() => {
         const storedUser = localStorage.getItem('klfood-user');
         const storedToken = localStorage.getItem('klfood-token');
@@ -132,14 +136,14 @@ const Header = () => {
                             </button>
                             <Link to="/" className="flex-shrink-0 flex items-center gap-3">
                                 <img src={klfoodLogo} alt="KL FOOD 로고" className="h-9 w-auto object-contain" />
-                                <span className="font-bold text-2xl text-[var(--color-text-dark)] tracking-tight">
+                                <span className="font-bold text-2xl text-[var(--color-text-dark)] tracking-tight whitespace-nowrap">
                                     KL FOOD
                                 </span>
                             </Link>
                             <nav className="hidden lg:flex items-center gap-8 ml-8 h-full">
                                 <Link
                                     to="/"
-                                    className={`h-full flex items-center text-[17px] font-medium transition-colors ${isB2B
+                                    className={`h-full flex items-center text-[17px] font-medium transition-colors whitespace-nowrap ${isB2B
                                         ? 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]'
                                         : 'text-[var(--color-text-gray)] hover:text-[#333]'
                                         }`}
@@ -148,7 +152,7 @@ const Header = () => {
                                 </Link>
                                 <Link
                                     to="/cham-banchan"
-                                    className={`h-full flex items-center text-[17px] font-medium transition-colors ${!isB2B
+                                    className={`h-full flex items-center text-[17px] font-medium transition-colors whitespace-nowrap ${!isB2B
                                         ? 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]'
                                         : 'text-[var(--color-text-gray)] hover:text-[#333]'
                                         }`}
@@ -161,7 +165,7 @@ const Header = () => {
                             </nav>
                         </div>
 
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-4 flex-shrink-0">
                             <form onSubmit={handleSearch} className="relative hidden md:block">
                                 <input
                                     type="text"
@@ -175,7 +179,7 @@ const Header = () => {
                                 </button>
                             </form>
                             {!isB2B && (
-                                <button onClick={() => setIsCartOpen(true)} className="relative p-2 text-gray-600 hover:text-[var(--color-primary)] transition-colors">
+                                <button onClick={() => setIsCartOpen(true)} className="relative p-2 text-gray-600 hover:text-[var(--color-primary)] transition-colors flex-shrink-0">
                                     <ShoppingCart className="w-6 h-6" />
                                     {totalCount > 0 && (
                                         <span className="absolute top-0 right-0 w-4 h-4 bg-[var(--color-primary)] text-white text-[10px] font-bold rounded-full flex items-center justify-center border border-white">
@@ -185,18 +189,24 @@ const Header = () => {
                                 </button>
                             )}
 
+                            {isAdmin && (
+                                <Link to="/admin" className="hidden sm:block text-sm font-medium text-[var(--color-text-gray)] hover:text-[var(--color-primary)] transition-colors whitespace-nowrap">
+                                    어드민
+                                </Link>
+                            )}
+
                             {user ? (
                                 <div className="flex items-center gap-3">
-                                    <Link to="/mypage" className="hidden sm:block text-sm font-medium text-[var(--color-primary)] hover:text-[#ff7a59] transition-colors">
+                                    <Link to="/mypage" className="hidden sm:block text-sm font-medium text-[var(--color-primary)] hover:text-[#ff7a59] transition-colors whitespace-nowrap">
                                         마이페이지
                                     </Link>
-                                    <span className="hidden sm:block text-sm font-medium text-gray-700">
+                                    <span className="hidden sm:block text-sm font-medium text-gray-700 whitespace-nowrap">
                                         안녕하세요, {user.name}님
                                     </span>
                                     <button
                                         type="button"
                                         onClick={handleLogout}
-                                        className="text-sm font-medium text-[var(--color-text-gray)] hover:text-[var(--color-text-dark)] transition-colors"
+                                        className="text-sm font-medium text-[var(--color-text-gray)] hover:text-[var(--color-text-dark)] transition-colors whitespace-nowrap"
                                     >
                                         로그아웃
                                     </button>
@@ -206,14 +216,14 @@ const Header = () => {
                                     <button
                                         type="button"
                                         onClick={() => openAuthModal('register')}
-                                        className="hidden sm:inline-flex items-center justify-center rounded-full border border-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-[var(--color-primary)] hover:bg-orange-50 transition-colors"
+                                        className="hidden sm:inline-flex items-center justify-center rounded-full border border-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-[var(--color-primary)] hover:bg-orange-50 transition-colors whitespace-nowrap"
                                     >
                                         회원가입
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => openAuthModal('login')}
-                                        className="inline-flex items-center justify-center rounded-full bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white hover:bg-[#ff7a59] transition-colors"
+                                        className="inline-flex items-center justify-center rounded-full bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white hover:bg-[#ff7a59] transition-colors whitespace-nowrap"
                                     >
                                         로그인
                                     </button>
@@ -225,13 +235,13 @@ const Header = () => {
             </header>
 
             {/* Category bar */}
-            <nav className="hidden md:block bg-[#FAF7F2] border-b border-[var(--color-border)]">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-8 h-11">
+            <nav className="hidden md:block bg-[#FAF7F2] border-b border-[var(--color-border)] overflow-x-auto">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-8 h-11 w-max min-w-full">
                     {categoryLinks.map((link) => (
                         <Link
                             key={link.to}
                             to={link.to}
-                            className="text-sm font-medium text-[var(--color-text-gray)] hover:text-[var(--color-primary)] transition-colors"
+                            className="text-sm font-medium text-[var(--color-text-gray)] hover:text-[var(--color-primary)] transition-colors whitespace-nowrap"
                         >
                             {link.label}
                         </Link>

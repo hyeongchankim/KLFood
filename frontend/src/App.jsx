@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import B2BMainPage from './pages/B2BMainPage';
@@ -9,7 +9,9 @@ import ComingSoonPage from './pages/ComingSoonPage';
 import SingleMenuPage from './pages/SingleMenuPage';
 import LunchboxPage from './pages/LunchboxPage';
 import OrderInfoPage from './pages/OrderInfoPage';
-import AdminPage from './pages/AdminPage';
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminMembersPage from './pages/admin/AdminMembersPage';
+import AdminBillingPage from './pages/admin/AdminBillingPage';
 import { CartProvider } from './context/CartContext';
 
 function App() {
@@ -27,7 +29,11 @@ function App() {
             <Route path="/cham-banchan/single" element={<SingleMenuPage />} />
             <Route path="/cham-banchan/single/salad" element={<ComingSoonPage title="샐러드" />} />
             <Route path="/order-info" element={<OrderInfoPage />} />
-            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Navigate to="members" replace />} />
+              <Route path="members" element={<AdminMembersPage />} />
+              <Route path="billing" element={<AdminBillingPage />} />
+            </Route>
             <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </main>

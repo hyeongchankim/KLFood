@@ -8,10 +8,8 @@ const mealPlansFilePath = path.resolve(__dirname, '../data/mealPlans.json');
 const ordersFilePath = path.resolve(__dirname, '../data/orders.json');
 
 // ponytail: hardcoded price map, move to dummyData.json lookup if menu options grow
-const MENU_PRICES = {
-    '정기구독 A세트(2인용)': 9500,
-    '정기구독 B세트(3인용)': 11500,
-};
+// day-by-day calendar billing (A/B세트) keyed by the set letter
+const PRICE_BY_SET = { A: 9500, B: 11500 };
 
 const fallbackMenus = [
     { main: '매콤 제육볶음', side: '아삭아삭 연근조림', soup: '시원한 바지락 된장찌개' },
@@ -96,6 +94,7 @@ exports.registerUser = async (req, res) => {
             name,
             email: email.toLowerCase(),
             password: hashedPassword,
+            isAdmin: false,
         };
 
         users.push(newUser);
@@ -104,7 +103,7 @@ exports.registerUser = async (req, res) => {
         return res.status(201).json({
             success: true,
             token: `demo-token-${newUser.id}`,
-            user: { id: newUser.id, name: newUser.name, email: newUser.email },
+            user: { id: newUser.id, name: newUser.name, email: newUser.email, isAdmin: newUser.isAdmin },
         });
     } catch (error) {
         console.error('Register error:', error);
@@ -181,12 +180,52 @@ exports.loginUser = async (req, res) => {
         return res.status(200).json({
             success: true,
             token: `demo-token-${user.id}`,
-            user: { id: user.id, name: user.name, email: user.email },
+            user: { id: user.id, name: user.name, email: user.email, isAdmin: !!user.isAdmin },
         });
     } catch (error) {
         console.error('Login error:', error);
         return res.status(500).json({ message: '로그인 처리 중 오류가 발생했습니다.' });
     }
+};
+
+// ponytail: token is just `demo-token-<userId>`, no expiry/signature — matches the rest of this app's auth, swap for real JWT if this ships beyond internal use
+const getRequestingUser = (req) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.replace(/^Bearer\s+/i, '');
+    const userId = token.startsWith('demo-token-') ? token.slice('demo-token-'.length) : null;
+    if (!userId) return null;
+    return readUsers().find((u) => u.id === userId) || null;
+};
+
+const requireAdmin = (req, res) => {
+    const requester = getRequestingUser(req);
+    if (!requester || !requester.isAdmin) {
+        res.status(403).json({ message: '관리자만 이용할 수 있습니다.' });
+        return null;
+    }
+    return requester;
+};
+
+exports.getUsers = (req, res) => {
+    if (!requireAdmin(req, res)) return;
+    const users = readUsers().map(({ password, ...safe }) => safe);
+    res.status(200).json({ users });
+};
+
+exports.promoteUser = (req, res) => {
+    if (!requireAdmin(req, res)) return;
+
+    const users = readUsers();
+    const target = users.find((u) => u.id === req.params.id);
+    if (!target) {
+        return res.status(404).json({ message: '사용자를 찾을 수 없습니다.' });
+    }
+
+    target.isAdmin = true;
+    writeUsers(users);
+
+    const { password, ...safe } = target;
+    res.status(200).json({ success: true, user: safe });
 };
 
 exports.createOrder = (req, res) => {
@@ -208,8 +247,8 @@ exports.createOrder = (req, res) => {
             entryAllowed: entryAllowed || '',
             doorPassword: doorPassword || '',
             createdAt: new Date().toISOString(),
-            counts: {},
-            invoices: {},
+            calendar: {},
+            payments: {},
         };
         orders.push(newOrder);
         writeOrders(orders);
@@ -222,23 +261,21 @@ exports.createOrder = (req, res) => {
 
 exports.getOrders = (req, res) => {
     try {
-        const orders = readOrders().map((order) => ({
-            ...order,
-            unitPrice: MENU_PRICES[order.menuChoice] || 0,
-        }));
-        res.status(200).json({ orders });
+        const orders = readOrders();
+        res.status(200).json({ orders, prices: PRICE_BY_SET });
     } catch (error) {
         console.error('Get orders error:', error);
         res.status(500).json({ message: '주문 목록을 불러오는 중 오류가 발생했습니다.' });
     }
 };
 
-exports.updateOrderCount = (req, res) => {
+// toggles a single calendar day between A / B / empty for one customer's month, mirroring the old excel sheet
+exports.setDeliveryDay = (req, res) => {
     const { id } = req.params;
-    const { month, delta } = req.body;
+    const { month, day, value } = req.body;
 
-    if (!month || typeof delta !== 'number') {
-        return res.status(400).json({ message: 'month, delta가 필요합니다.' });
+    if (!/^\d{4}-\d{2}$/.test(month || '') || !day || !['A', 'B', null].includes(value)) {
+        return res.status(400).json({ message: 'month(YYYY-MM), day, value(A/B/null)가 필요합니다.' });
     }
 
     try {
@@ -248,23 +285,84 @@ exports.updateOrderCount = (req, res) => {
             return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
         }
 
-        const current = order.counts[month] || 0;
-        order.counts[month] = Math.max(0, current + delta);
+        order.calendar = order.calendar || {};
+        order.calendar[month] = order.calendar[month] || {};
+        if (value === null) {
+            delete order.calendar[month][day];
+        } else {
+            order.calendar[month][day] = value;
+        }
         writeOrders(orders);
 
-        res.status(200).json({ success: true, order: { ...order, unitPrice: MENU_PRICES[order.menuChoice] || 0 } });
+        res.status(200).json({ success: true, calendar: order.calendar[month] });
     } catch (error) {
-        console.error('Update order count error:', error);
-        res.status(500).json({ message: '횟수 업데이트 중 오류가 발생했습니다.' });
+        console.error('Set delivery day error:', error);
+        res.status(500).json({ message: '배달 캘린더 업데이트 중 오류가 발생했습니다.' });
     }
 };
 
+// clicking the same paid date again un-checks it, matching the requested "체크" (check on/off) UX
+exports.setPaymentDate = (req, res) => {
+    const { id } = req.params;
+    const { month, date } = req.body;
+
+    if (!/^\d{4}-\d{2}$/.test(month || '') || !/^\d{4}-\d{2}-\d{2}$/.test(date || '')) {
+        return res.status(400).json({ message: 'month(YYYY-MM), date(YYYY-MM-DD)가 필요합니다.' });
+    }
+
+    try {
+        const orders = readOrders();
+        const order = orders.find((o) => o.id === id);
+        if (!order) {
+            return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
+        }
+
+        order.payments = order.payments || {};
+        const current = order.payments[month] || {};
+        const alreadyPaidThisDate = current.paidAt === date;
+        order.payments[month] = { ...current, paidAt: alreadyPaidThisDate ? undefined : date };
+        writeOrders(orders);
+
+        res.status(200).json({ success: true, payment: order.payments[month] });
+    } catch (error) {
+        console.error('Set payment date error:', error);
+        res.status(500).json({ message: '입금일 업데이트 중 오류가 발생했습니다.' });
+    }
+};
+
+exports.setPayerName = (req, res) => {
+    const { id } = req.params;
+    const { month, payerName } = req.body;
+
+    if (!/^\d{4}-\d{2}$/.test(month || '')) {
+        return res.status(400).json({ message: 'month(YYYY-MM)가 필요합니다.' });
+    }
+
+    try {
+        const orders = readOrders();
+        const order = orders.find((o) => o.id === id);
+        if (!order) {
+            return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
+        }
+
+        order.payments = order.payments || {};
+        order.payments[month] = { ...(order.payments[month] || {}), payerName: payerName || '' };
+        writeOrders(orders);
+
+        res.status(200).json({ success: true, payment: order.payments[month] });
+    } catch (error) {
+        console.error('Set payer name error:', error);
+        res.status(500).json({ message: '입금인 업데이트 중 오류가 발생했습니다.' });
+    }
+};
+
+// ponytail: mock send — no real email/SMS integration. Just marks as sent.
 exports.sendInvoice = (req, res) => {
     const { id } = req.params;
     const { month } = req.body;
 
-    if (!month) {
-        return res.status(400).json({ message: 'month가 필요합니다.' });
+    if (!/^\d{4}-\d{2}$/.test(month || '')) {
+        return res.status(400).json({ message: 'month(YYYY-MM)가 필요합니다.' });
     }
 
     try {
@@ -274,15 +372,15 @@ exports.sendInvoice = (req, res) => {
             return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
         }
 
-        const count = order.counts[month] || 0;
-        const unitPrice = MENU_PRICES[order.menuChoice] || 0;
-        const total = count * unitPrice;
-
-        // ponytail: mock send — no real email/SMS integration. Just marks as sent.
-        order.invoices[month] = { sent: true, count, unitPrice, total, sentAt: new Date().toISOString() };
+        order.payments = order.payments || {};
+        order.payments[month] = {
+            ...(order.payments[month] || {}),
+            invoiceSent: true,
+            invoiceSentAt: new Date().toISOString(),
+        };
         writeOrders(orders);
 
-        res.status(200).json({ success: true, invoice: order.invoices[month] });
+        res.status(200).json({ success: true, payment: order.payments[month] });
     } catch (error) {
         console.error('Send invoice error:', error);
         res.status(500).json({ message: '청구서 발송 중 오류가 발생했습니다.' });

@@ -6,14 +6,16 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["server.js"],
       "cwd": "backend",
-      "port": 5000
+      "port": 5000,
+      "autoPort": false
     },
     {
       "name": "Frontend (Vite + React)",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "cwd": "frontend",
-      "port": 5173
+      "port": 5173,
+      "autoPort": true
     }
   ]
 }
