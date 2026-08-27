@@ -1,3 +1,4 @@
+import { apiUrl } from '../lib/api';
 import { useState } from 'react';
 import { ArrowRight, CheckCircle, Mail, Phone } from 'lucide-react';
 
@@ -15,7 +16,7 @@ const B2BMainPage = () => {
         setStatus('submitting');
 
         try {
-            const response = await fetch('http://localhost:5000/api/b2b-inquiry', {
+            const response = await fetch(apiUrl('/api/b2b-inquiry'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

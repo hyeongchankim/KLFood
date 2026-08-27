@@ -1,3 +1,4 @@
+import { apiUrl } from '../lib/api';
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { User, CheckCircle } from 'lucide-react';
@@ -23,7 +24,7 @@ const OrderInfoPage = () => {
         setError('');
         setSubmitting(true);
         try {
-            const response = await fetch('http://localhost:5000/api/orders', {
+            const response = await fetch(apiUrl('/api/orders'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, ...details }),

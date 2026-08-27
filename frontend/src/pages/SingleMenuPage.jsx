@@ -1,3 +1,4 @@
+import { apiUrl } from '../lib/api';
 import { useState, useEffect, useRef } from 'react';
 import { ShoppingCart, Heart, SlidersHorizontal, ChevronDown, ArrowRight, ArrowLeft, X, Search } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -17,7 +18,7 @@ const SingleMenuPage = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/cham-products');
+                const response = await fetch(apiUrl('/api/cham-products'));
                 const result = await response.json();
                 setData(result);
                 setLoading(false);

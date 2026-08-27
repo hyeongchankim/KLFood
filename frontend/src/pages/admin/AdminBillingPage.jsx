@@ -1,3 +1,4 @@
+import { apiUrl } from '../../lib/api';
 import { useState, useEffect, useMemo } from 'react';
 import { RefreshCw, Check, Send } from 'lucide-react';
 
@@ -28,7 +29,7 @@ const AdminBillingPage = () => {
     const fetchOrders = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:5000/api/orders');
+            const response = await fetch(apiUrl('/api/orders'));
             const result = await response.json();
             setOrders(result.orders || []);
             if (result.prices) setPrices(result.prices);
@@ -57,7 +58,7 @@ const AdminBillingPage = () => {
         }));
 
         try {
-            await fetch(`http://localhost:5000/api/orders/${order.id}/day`, {
+            await fetch(apiUrl(`/api/orders/${order.id}/day`), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ month, day: String(day), value: next }),
@@ -73,7 +74,7 @@ const AdminBillingPage = () => {
         const date = `${month}-${pad2(day)}`;
 
         try {
-            const response = await fetch(`http://localhost:5000/api/orders/${order.id}/payment`, {
+            const response = await fetch(apiUrl(`/api/orders/${order.id}/payment`), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ month, date }),
@@ -96,7 +97,7 @@ const AdminBillingPage = () => {
 
     const savePayerName = async (order) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/orders/${order.id}/payer`, {
+            const response = await fetch(apiUrl(`/api/orders/${order.id}/payer`), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ month, payerName: payerDraft.trim() }),
@@ -115,7 +116,7 @@ const AdminBillingPage = () => {
     const sendInvoice = async (order) => {
         setSendingInvoiceFor(order.id);
         try {
-            const response = await fetch(`http://localhost:5000/api/orders/${order.id}/invoice`, {
+            const response = await fetch(apiUrl(`/api/orders/${order.id}/invoice`), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ month }),

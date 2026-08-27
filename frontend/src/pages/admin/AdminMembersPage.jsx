@@ -1,3 +1,4 @@
+import { apiUrl } from '../../lib/api';
 import { useState, useEffect } from 'react';
 import { ShieldCheck } from 'lucide-react';
 
@@ -11,7 +12,7 @@ const AdminMembersPage = () => {
     const fetchUsers = async () => {
         setUsersError('');
         try {
-            const response = await fetch('http://localhost:5000/api/users', { headers: authHeaders() });
+            const response = await fetch(apiUrl('/api/users'), { headers: authHeaders() });
             const result = await response.json();
             if (!response.ok) {
                 setUsersError(result.message || '회원 목록을 불러올 수 없습니다.');
@@ -31,7 +32,7 @@ const AdminMembersPage = () => {
     const promoteUser = async (id) => {
         setPromotingId(id);
         try {
-            const response = await fetch(`http://localhost:5000/api/users/${id}/promote`, {
+            const response = await fetch(apiUrl(`/api/users/${id}/promote`), {
                 method: 'PATCH',
                 headers: authHeaders(),
             });

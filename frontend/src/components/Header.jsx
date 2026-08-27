@@ -1,3 +1,4 @@
+import { apiUrl } from '../lib/api';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Menu, Search, X, Mail, Lock, User, Trash2, Plus, Minus } from 'lucide-react';
@@ -73,7 +74,7 @@ const Header = () => {
         setAuthError('');
 
         try {
-            const response = await fetch(`http://localhost:5000/api/auth/${authMode === 'register' ? 'register' : 'login'}`, {
+            const response = await fetch(apiUrl(`/api/auth/${authMode === 'register' ? 'register' : 'login'}`), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(authMode === 'register' ? { ...formData, ...orderDetails } : formData),

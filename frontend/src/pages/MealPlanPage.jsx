@@ -1,3 +1,4 @@
+import { apiUrl } from '../lib/api';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react';
@@ -19,7 +20,7 @@ const MealPlanPage = () => {
         const fetchMealPlan = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:5000/api/meal-plan?year=${year}&month=${month + 1}`);
+                const response = await fetch(apiUrl(`/api/meal-plan?year=${year}&month=${month + 1}`));
                 const result = await response.json();
                 setMonthDays(result.days || {});
             } catch (err) {
