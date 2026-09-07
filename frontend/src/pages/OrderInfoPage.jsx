@@ -82,7 +82,7 @@ const OrderInfoPage = () => {
                             onChange={(e) => setName(e.target.value)}
                             placeholder="이름"
                             required
-                            className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-orange-100"
+                            className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20"
                         />
                     </div>
 

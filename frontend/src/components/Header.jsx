@@ -120,70 +120,70 @@ const Header = () => {
         <>
             {/* Top announcement ticker */}
             <div className="sticky top-0 z-50">
-                <div className="bg-[#6B714B] text-white text-xs font-medium overflow-hidden">
-                    <div className="flex gap-16 w-max py-2 ticker-track">
+                <div className="bg-[var(--color-text-dark)] text-white/90 text-[11px] tracking-wide overflow-hidden">
+                    <div className="flex gap-12 w-max py-1.5 ticker-track">
                         {[...tickerItems, ...tickerItems].map((text, idx) => (
                             <span key={idx} className="whitespace-nowrap">{text}</span>
                         ))}
                     </div>
                 </div>
 
-            <header className="bg-white shadow-sm border-b border-[var(--color-border)]">
+            <header className="bg-white border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center h-20">
+                    <div className="flex justify-between items-center h-16">
                         <div className="flex items-center gap-6">
-                            <button className="p-2 -ml-2 text-gray-500 hover:text-[var(--color-primary)] transition-colors lg:hidden">
-                                <Menu className="w-6 h-6" />
+                            <button className="p-2 -ml-2 rounded-full text-gray-500 hover:bg-gray-50 hover:text-[var(--color-primary)] transition-colors lg:hidden">
+                                <Menu className="w-5 h-5" />
                             </button>
-                            <Link to="/" className="flex-shrink-0 flex items-center gap-3">
-                                <img src={klfoodLogo} alt="KL FOOD 로고" className="h-9 w-auto object-contain" />
-                                <span className="font-bold text-2xl text-[var(--color-text-dark)] tracking-tight whitespace-nowrap">
+                            <Link to="/" className="flex-shrink-0 flex items-center gap-2.5">
+                                <img src={klfoodLogo} alt="KL FOOD 로고" className="h-8 w-auto object-contain" />
+                                <span className="font-bold text-xl text-[var(--color-text-dark)] tracking-tight whitespace-nowrap">
                                     KL FOOD
                                 </span>
                             </Link>
-                            <nav className="hidden lg:flex items-center gap-8 ml-8 h-full">
+                            <nav className="hidden lg:flex items-center gap-7 ml-6 h-full">
                                 <Link
                                     to="/"
-                                    className={`h-full flex items-center text-[17px] font-medium transition-colors whitespace-nowrap ${isB2B
-                                        ? 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]'
-                                        : 'text-[var(--color-text-gray)] hover:text-[#333]'
+                                    className={`h-full flex items-center text-[15px] font-medium transition-colors whitespace-nowrap border-b ${isB2B
+                                        ? 'text-[var(--color-primary)] border-[var(--color-primary)]'
+                                        : 'text-[var(--color-text-gray)] border-transparent hover:text-[var(--color-text-dark)]'
                                         }`}
                                 >
                                     B2B 대량급식
                                 </Link>
                                 <Link
                                     to="/cham-banchan"
-                                    className={`h-full flex items-center text-[17px] font-medium transition-colors whitespace-nowrap ${!isB2B
-                                        ? 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]'
-                                        : 'text-[var(--color-text-gray)] hover:text-[#333]'
+                                    className={`h-full flex items-center text-[15px] font-medium transition-colors whitespace-nowrap border-b ${!isB2B
+                                        ? 'text-[var(--color-primary)] border-[var(--color-primary)]'
+                                        : 'text-[var(--color-text-gray)] border-transparent hover:text-[var(--color-text-dark)]'
                                         }`}
                                 >
-                                    <span className="flex items-center gap-2.5">
-                                        <img src={chamBanchanLogo} alt="참반찬 로고" className="h-7 w-7 object-contain" />
+                                    <span className="flex items-center gap-2">
+                                        <img src={chamBanchanLogo} alt="참반찬 로고" className="h-6 w-6 object-contain rounded-full" />
                                         <span>참반찬</span>
                                     </span>
                                 </Link>
                             </nav>
                         </div>
 
-                        <div className="flex items-center gap-4 flex-shrink-0">
+                        <div className="flex items-center gap-3 flex-shrink-0">
                             <form onSubmit={handleSearch} className="relative hidden md:block">
                                 <input
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="어떤 반찬을 찾으세요?"
-                                    className="w-64 pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-all"
+                                    className="w-56 pl-9 pr-4 py-2 bg-gray-50 border border-transparent rounded-full text-sm focus:outline-none focus:bg-white focus:border-gray-200 transition-all"
                                 />
-                                <button type="submit" className="absolute left-3 top-2.5 text-gray-400 hover:text-[var(--color-primary)]">
-                                    <Search className="w-5 h-5" />
+                                <button type="submit" className="absolute left-2.5 top-2 text-gray-400 hover:text-[var(--color-primary)]">
+                                    <Search className="w-4 h-4" />
                                 </button>
                             </form>
                             {!isB2B && (
-                                <button onClick={() => setIsCartOpen(true)} className="relative p-2 text-gray-600 hover:text-[var(--color-primary)] transition-colors flex-shrink-0">
-                                    <ShoppingCart className="w-6 h-6" />
+                                <button onClick={() => setIsCartOpen(true)} className="relative p-2 rounded-full text-gray-600 hover:bg-gray-50 hover:text-[var(--color-primary)] transition-colors flex-shrink-0">
+                                    <ShoppingCart className="w-5 h-5" />
                                     {totalCount > 0 && (
-                                        <span className="absolute top-0 right-0 w-4 h-4 bg-[var(--color-primary)] text-white text-[10px] font-bold rounded-full flex items-center justify-center border border-white">
+                                        <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-[var(--color-primary)] text-white text-[10px] font-bold rounded-full flex items-center justify-center border border-white">
                                             {totalCount}
                                         </span>
                                     )}
@@ -198,11 +198,11 @@ const Header = () => {
 
                             {user ? (
                                 <div className="flex items-center gap-3">
-                                    <Link to="/mypage" className="hidden sm:block text-sm font-medium text-[var(--color-primary)] hover:text-[#ff7a59] transition-colors whitespace-nowrap">
+                                    <Link to="/mypage" className="hidden sm:block text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors whitespace-nowrap">
                                         마이페이지
                                     </Link>
-                                    <span className="hidden sm:block text-sm font-medium text-gray-700 whitespace-nowrap">
-                                        안녕하세요, {user.name}님
+                                    <span className="hidden sm:block text-sm text-gray-500 whitespace-nowrap">
+                                        {user.name}님
                                     </span>
                                     <button
                                         type="button"
@@ -213,18 +213,18 @@ const Header = () => {
                                     </button>
                                 </div>
                             ) : (
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-3">
                                     <button
                                         type="button"
                                         onClick={() => openAuthModal('register')}
-                                        className="hidden sm:inline-flex items-center justify-center rounded-full border border-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-[var(--color-primary)] hover:bg-orange-50 transition-colors whitespace-nowrap"
+                                        className="hidden sm:inline-flex text-sm font-medium text-[var(--color-text-gray)] hover:text-[var(--color-text-dark)] transition-colors whitespace-nowrap"
                                     >
                                         회원가입
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => openAuthModal('login')}
-                                        className="inline-flex items-center justify-center rounded-full bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white hover:bg-[#ff7a59] transition-colors whitespace-nowrap"
+                                        className="inline-flex items-center justify-center rounded-full bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-primary-hover)] transition-colors whitespace-nowrap"
                                     >
                                         로그인
                                     </button>
@@ -236,13 +236,13 @@ const Header = () => {
             </header>
 
             {/* Category bar */}
-            <nav className="hidden md:block bg-[#FAF7F2] border-b border-[var(--color-border)] overflow-x-auto">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-8 h-11 w-max min-w-full">
+            <nav className="hidden md:block bg-white border-b border-gray-100 overflow-x-auto">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-7 h-10 w-max min-w-full">
                     {categoryLinks.map((link) => (
                         <Link
                             key={link.to}
                             to={link.to}
-                            className="text-sm font-medium text-[var(--color-text-gray)] hover:text-[var(--color-primary)] transition-colors whitespace-nowrap"
+                            className="text-[13px] text-gray-500 hover:text-[var(--color-text-dark)] transition-colors whitespace-nowrap"
                         >
                             {link.label}
                         </Link>
@@ -309,7 +309,7 @@ const Header = () => {
                                     <span className="text-sm text-gray-600 font-medium">총 결제금액</span>
                                     <span className="text-xl font-extrabold text-gray-900">{totalPrice.toLocaleString()}원</span>
                                 </div>
-                                <button className="w-full bg-[var(--color-primary)] hover:bg-[#ff7a59] text-white font-bold py-3.5 rounded-xl transition-colors text-sm">
+                                <button className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-bold py-3.5 rounded-xl transition-colors text-sm">
                                     주문하기
                                 </button>
                             </div>
@@ -350,7 +350,7 @@ const Header = () => {
                                         onChange={handleChange}
                                         placeholder="이름"
                                         required
-                                        className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-orange-100"
+                                        className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20"
                                     />
                                 </div>
                             )}
@@ -364,7 +364,7 @@ const Header = () => {
                                     onChange={handleChange}
                                     placeholder="이메일"
                                     required
-                                    className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-orange-100"
+                                    className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20"
                                 />
                             </div>
 
@@ -378,7 +378,7 @@ const Header = () => {
                                     placeholder="비밀번호"
                                     minLength="4"
                                     required
-                                    className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-orange-100"
+                                    className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20"
                                 />
                             </div>
 
@@ -391,7 +391,7 @@ const Header = () => {
 
                             <button
                                 type="submit"
-                                className="w-full rounded-xl bg-[var(--color-primary)] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#ff7a59]"
+                                className="w-full rounded-xl bg-[var(--color-primary)] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-primary-hover)]"
                             >
                                 {authMode === 'register' ? '회원가입하기' : '로그인하기'}
                             </button>

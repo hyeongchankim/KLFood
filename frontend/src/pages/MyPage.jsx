@@ -13,7 +13,7 @@ const MyPage = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 px-4 py-20">
+      <div className="min-h-screen bg-[var(--color-background-warm)] px-4 py-20">
         <div className="mx-auto max-w-3xl rounded-3xl bg-white p-10 text-center shadow-sm">
           <h1 className="text-2xl font-bold text-gray-900">로그인이 필요합니다</h1>
           <p className="mt-3 text-gray-600">마이페이지를 보려면 먼저 로그인해 주세요.</p>
@@ -23,17 +23,17 @@ const MyPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[var(--color-background-warm)] px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl space-y-6">
-        <section className="rounded-3xl bg-gradient-to-br from-[#ff7a59] to-[#ff5d3a] p-8 text-white shadow-lg">
+        <section className="rounded-3xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] p-8 text-white shadow-lg">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm font-medium text-orange-100">환영합니다</p>
+              <p className="text-sm font-medium text-white/70">환영합니다</p>
               <h1 className="mt-2 text-3xl font-bold">{user.name}님</h1>
-              <p className="mt-3 text-orange-50">KL FOOD의 맞춤 서비스와 주문 내역을 한눈에 관리해 보세요.</p>
+              <p className="mt-3 text-white/80">KL FOOD의 맞춤 서비스와 주문 내역을 한눈에 관리해 보세요.</p>
             </div>
             <div className="rounded-2xl bg-white/20 px-4 py-3 backdrop-blur-sm">
-              <p className="text-sm text-orange-100">가입 이메일</p>
+              <p className="text-sm text-white/70">가입 이메일</p>
               <p className="mt-1 font-semibold">{user.email}</p>
             </div>
           </div>

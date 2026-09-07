@@ -95,7 +95,7 @@ const B2CMainPage = () => {
                                     key={cat}
                                     onClick={() => { setActiveCategory(cat); setIsFilterOpen(false); }}
                                     className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${activeCategory === cat
-                                        ? 'text-[var(--color-primary)] font-bold bg-orange-50'
+                                        ? 'text-[var(--color-primary)] font-bold bg-[var(--color-primary)]/10'
                                         : 'text-gray-600 hover:bg-gray-50'
                                         }`}
                                 >
@@ -117,7 +117,7 @@ const B2CMainPage = () => {
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
                         {filteredProducts.map((product) => (
                             <div key={product.id} className="group">
-                                <div className="relative aspect-square bg-[#EFEBE3] rounded-sm overflow-hidden mb-4">
+                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-sm overflow-hidden mb-4">
                                     <img
                                         src={product.imageUrl}
                                         alt={product.name}

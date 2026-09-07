@@ -60,9 +60,9 @@ const MealPlanPage = () => {
 
     return (
         <div className="bg-gray-50 min-h-screen pb-20">
-            <section className="bg-[#F3ECE6] py-12 px-4">
+            <section className="bg-[var(--color-background-warm)] py-12 px-4">
                 <div className="max-w-5xl mx-auto text-center">
-                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-white text-[var(--color-primary)] font-bold text-sm rounded-full shadow-sm mb-4 border border-[#E5DFD3]">
+                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-white text-[var(--color-primary)] font-bold text-sm rounded-full shadow-sm mb-4 border border-[var(--color-border)]">
                         <CalendarDays className="w-4 h-4" />
                         식단표
                     </span>
@@ -115,7 +115,7 @@ const MealPlanPage = () => {
                                     className={`aspect-square rounded-xl p-1.5 flex flex-col items-center justify-start gap-1 border transition-all text-left ${isSelected
                                         ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md'
                                         : isToday
-                                            ? 'border-[var(--color-primary)] bg-orange-50'
+                                            ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10'
                                             : 'border-transparent hover:bg-gray-50'
                                         }`}
                                 >
@@ -164,7 +164,7 @@ const MealPlanPage = () => {
 
                             <button
                                 onClick={() => navigate('/order-info')}
-                                className="w-full mt-8 bg-[var(--color-primary)] hover:bg-[#ff7a59] text-white font-bold py-3 rounded-xl transition-colors text-sm"
+                                className="w-full mt-8 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-bold py-3 rounded-xl transition-colors text-sm"
                             >
                                 오늘부터 주문하기
                             </button>

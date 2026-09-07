@@ -30,7 +30,7 @@ const AdminLayout = () => {
         return (
             <div className="min-h-[70vh] flex items-center justify-center bg-[var(--color-background-warm)] px-4">
                 <form onSubmit={handleUnlock} className="max-w-sm w-full bg-white rounded-3xl shadow-sm border border-gray-100 p-8 text-center">
-                    <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-orange-50 flex items-center justify-center text-[var(--color-primary)]">
+                    <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)]">
                         <Lock className="w-6 h-6" />
                     </div>
                     <h1 className="text-xl font-bold text-gray-900 mb-1">관리자 페이지</h1>
@@ -40,7 +40,7 @@ const AdminLayout = () => {
                         value={passcodeInput}
                         onChange={(e) => setPasscodeInput(e.target.value)}
                         placeholder="비밀번호"
-                        className="w-full rounded-xl border border-gray-200 py-3 px-4 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-orange-100 mb-3"
+                        className="w-full rounded-xl border border-gray-200 py-3 px-4 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 mb-3"
                     />
                     {passcodeError && <p className="text-sm text-red-600 mb-3">{passcodeError}</p>}
                     <button type="submit" className="w-full rounded-xl bg-[var(--color-primary)] py-3 text-sm font-bold text-white hover:bg-[var(--color-primary-hover)] transition-colors">

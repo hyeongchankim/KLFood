@@ -3,7 +3,7 @@ import { Phone, MapPin, UtensilsCrossed, KeyRound, DoorOpen } from 'lucide-react
 const MENU_OPTIONS = ['정기구독 A세트(2인용)', '정기구독 B세트(3인용)'];
 const WEEKDAYS = ['월', '화', '수', '목', '금'];
 
-const inputClass = 'w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-orange-100';
+const inputClass = 'w-full rounded-xl border border-gray-200 py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20';
 
 const OrderDetailsFields = ({ values, onChange }) => {
     const toggleDay = (day) => {

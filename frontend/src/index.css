@@ -1,24 +1,26 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
 
+/* palette pulled from the KL FOOD logo's leaf/bowl greens, kept to one family site-wide */
 @theme {
-  --color-primary: #A97164;
-  --color-primary-hover: #8F5C50;
-  --color-secondary: #B7786B;
-  --color-background-warm: #F8F6F0;
-  --color-text-dark: #4A4238;
-  --color-text-gray: #726A63;
-  --color-border: #E5DFD3;
+  --color-primary: #486B3B;
+  --color-primary-hover: #3A5630;
+  --color-secondary: #8AA757;
+  --color-background-warm: #F6F8F1;
+  --color-text-dark: #263422;
+  --color-text-gray: #6B7263;
+  --color-border: #E1E6D6;
 }
 
 body {
-  font-family: 'Pretendard', 'Inter', -apple-system, sans-serif;
+  font-family: 'Pretendard', -apple-system, sans-serif;
   background-color: var(--color-background-warm);
   color: var(--color-text-dark);
 }
 
 h1, h2, h3 {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  font-weight: 700;
 }
 
 /* Custom Scrollbar for better aesthetics */

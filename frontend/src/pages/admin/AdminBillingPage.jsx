@@ -225,8 +225,8 @@ const AdminBillingPage = () => {
                                                     <button
                                                         onClick={() => cycleDay(order, day)}
                                                         className={`w-7 h-7 rounded-md text-[11px] font-bold transition-colors ${
-                                                            value === 'A' ? 'bg-orange-100 text-[var(--color-primary)]'
-                                                                : value === 'B' ? 'bg-blue-100 text-blue-600'
+                                                            value === 'A' ? 'bg-[var(--color-primary)]/15 text-[var(--color-primary)]'
+                                                                : value === 'B' ? 'bg-[var(--color-secondary)]/25 text-[var(--color-primary-hover)]'
                                                                     : 'text-transparent hover:bg-gray-100'
                                                         }`}
                                                         title={`${month}-${pad2(day)}`}
@@ -239,7 +239,7 @@ const AdminBillingPage = () => {
                                         <td className="px-3 py-2 border-l border-gray-100 text-right font-semibold text-gray-900 whitespace-nowrap">{total.toLocaleString()}원</td>
                                         <td className="px-3 py-2 text-center font-semibold">{deliveryCount}</td>
                                         <td className="px-3 py-2 text-center text-[var(--color-primary)] font-semibold">{aCount}</td>
-                                        <td className="px-3 py-2 text-center text-blue-600 font-semibold">{bCount}</td>
+                                        <td className="px-3 py-2 text-center text-[var(--color-primary-hover)] font-semibold">{bCount}</td>
                                         <td className="px-3 py-2 text-center relative">
                                             <button
                                                 onClick={() => openPaymentPopover(order)}

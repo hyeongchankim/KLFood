@@ -97,7 +97,7 @@ const LunchboxPage = () => {
                                     key={cat}
                                     onClick={() => { setActiveCategory(cat); setIsFilterOpen(false); }}
                                     className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${activeCategory === cat
-                                        ? 'text-[var(--color-primary)] font-bold bg-orange-50'
+                                        ? 'text-[var(--color-primary)] font-bold bg-[var(--color-primary)]/10'
                                         : 'text-gray-600 hover:bg-gray-50'
                                         }`}
                                 >
@@ -119,7 +119,7 @@ const LunchboxPage = () => {
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
                         {filteredProducts.map((product) => (
                             <div key={product.id} className="group">
-                                <div className="relative aspect-square bg-[#EFEBE3] rounded-sm overflow-hidden mb-4">
+                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-sm overflow-hidden mb-4">
                                     <img
                                         src={product.imageUrl}
                                         alt={product.name}
@@ -176,7 +176,7 @@ const LunchboxPage = () => {
                     <div ref={newArrivalsRef} className="flex-1 flex gap-5 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         {newArrivals.map((product) => (
                             <div key={product.id} className="flex-none w-[220px] group">
-                                <div className="relative aspect-square bg-[#EFEBE3] rounded-sm overflow-hidden mb-4">
+                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-sm overflow-hidden mb-4">
                                     <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                     <button className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:text-red-500 transition-colors shadow-sm text-gray-400">
                                         <Heart className="w-4 h-4" />

@@ -43,13 +43,13 @@ const B2BMainPage = () => {
     return (
         <div className="bg-[var(--color-background-warm)] w-full">
             {/* Hero Section */}
-            <section className="relative overflow-hidden bg-gradient-to-br from-[#F3ECE6] to-[#EDE3D8] py-20 lg:py-32">
-                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-[#D8B8AC] opacity-40 blur-3xl mix-blend-multiply"></div>
-                <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-[#E0EEC8] opacity-40 blur-3xl mix-blend-multiply"></div>
+            <section className="relative overflow-hidden bg-gradient-to-br from-[var(--color-background-warm)] to-white py-20 lg:py-32">
+                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-[var(--color-secondary)] opacity-30 blur-3xl mix-blend-multiply"></div>
+                <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-[var(--color-primary)] opacity-20 blur-3xl mix-blend-multiply"></div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center gap-12">
                     <div className="flex-1 text-center md:text-left">
-                        <span className="inline-block py-1 px-3 rounded-full bg-[#F0E2DC] text-[var(--color-primary)] font-bold text-sm tracking-wide mb-4">
+                        <span className="inline-block py-1 px-3 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-bold text-sm tracking-wide mb-4">
                             신선한 식재료, 정직한 맛
                         </span>
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
@@ -71,7 +71,7 @@ const B2BMainPage = () => {
                     </div>
 
                     <div className="flex-1 relative group w-full max-w-md mx-auto">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-orange-400 to-red-500 rounded-3xl transform rotate-3 scale-105 opacity-20 group-hover:rotate-6 transition-transform duration-500"></div>
+                        <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-secondary)] to-[var(--color-primary)] rounded-3xl transform rotate-3 scale-105 opacity-20 group-hover:rotate-6 transition-transform duration-500"></div>
                         <img
                             src="https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=800&auto=format&fit=crop"
                             alt="맛있고 건강한 단체 급식"
@@ -101,8 +101,8 @@ const B2BMainPage = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                         {/* Feature 1 */}
-                        <div className="bg-[#F5EFE7] rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-[#E5DFD3]">
-                            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-orange-500">
+                        <div className="bg-[var(--color-background-warm)] rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-[var(--color-border)]">
+                            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-[var(--color-primary)]">
                                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                                 </svg>
@@ -114,8 +114,8 @@ const B2BMainPage = () => {
                         </div>
 
                         {/* Feature 2 */}
-                        <div className="bg-[#FAF6F0] rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-[#EBE0D3]">
-                            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-red-500">
+                        <div className="bg-[var(--color-background-warm)] rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-[var(--color-border)]">
+                            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-[var(--color-primary)]">
                                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
@@ -127,8 +127,8 @@ const B2BMainPage = () => {
                         </div>
 
                         {/* Feature 3 */}
-                        <div className="bg-yellow-50 rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-yellow-100">
-                            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-yellow-500">
+                        <div className="bg-[var(--color-background-warm)] rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-[var(--color-border)]">
+                            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-[var(--color-primary)]">
                                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                 </svg>
@@ -146,10 +146,10 @@ const B2BMainPage = () => {
             <section id="inquiry-form" className="py-24 bg-gray-50 border-t border-gray-200">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row">
-                        <div className="md:w-5/12 bg-gradient-to-br from-[#FF5A5F] to-orange-400 p-10 text-white flex flex-col justify-between">
+                        <div className="md:w-5/12 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] p-10 text-white flex flex-col justify-between">
                             <div>
                                 <h2 className="text-3xl font-bold mb-4">식단 및 단가 문의</h2>
-                                <p className="text-orange-50 opacity-90 leading-relaxed mb-8">
+                                <p className="text-white/80 opacity-90 leading-relaxed mb-8">
                                     시설 내 급식 도입을 고민 중이신가요?
                                     <br />간단한 정보를 남겨주시면, 담당자가 확인 후 시설별 맞춤 제안서를 보내드립니다.
                                 </p>
@@ -160,7 +160,7 @@ const B2BMainPage = () => {
                                             <Phone className="w-5 h-5 text-white" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-orange-100 font-medium">상담 문의 (평일 09시 ~ 18시)</p>
+                                            <p className="text-xs text-white/70 font-medium">상담 문의 (평일 09시 ~ 18시)</p>
                                             <p className="text-lg font-bold tracking-wide">1588-0000</p>
                                         </div>
                                     </div>
@@ -169,7 +169,7 @@ const B2BMainPage = () => {
                                             <Mail className="w-5 h-5 text-white" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-orange-100 font-medium">이메일 문의</p>
+                                            <p className="text-xs text-white/70 font-medium">이메일 문의</p>
                                             <p className="text-lg font-bold tracking-wide">b2b@lnkfood.com</p>
                                         </div>
                                     </div>
