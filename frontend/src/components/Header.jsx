@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Menu, Search, X, Mail, Lock, User, Trash2, Plus, Minus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { TABS, useHiddenTabs, loadTabSettings } from '../lib/tabSettings';
 import OrderDetailsFields, { initialOrderDetails } from './OrderDetailsFields';
 const klfoodLogo = '/KLfood_로고.png';
 const chamBanchanLogo = '/참반찬_로고.jpeg';
@@ -34,6 +35,7 @@ const Header = () => {
     const isAdmin = !!user?.isAdmin;
 
     useEffect(() => {
+        loadTabSettings();
         const storedUser = localStorage.getItem('klfood-user');
         const storedToken = localStorage.getItem('klfood-token');
 
@@ -107,13 +109,10 @@ const Header = () => {
         setUser(null);
     };
 
-    const categoryLinks = [
-        { to: '/', label: 'B2B 대량급식' },
-        { to: '/cham-banchan', label: '정기 식단' },
-        { to: '/cham-banchan/meal-plan', label: '식단표' },
-        { to: '/cham-banchan/lunchbox', label: '정기 도시락' },
-        { to: '/cham-banchan/single', label: '단품 반찬' },
-    ];
+    const hiddenTabs = useHiddenTabs();
+    // 설정 로딩 전(null)에는 탭을 그리지 않아 숨길 탭이 깜빡이지 않게 함
+    const categoryLinks = hiddenTabs ? TABS.filter((t) => !hiddenTabs.includes(t.key)) : [];
+    const showB2BNav = hiddenTabs !== null && !hiddenTabs.includes('b2b');
     const tickerItems = ['매일 새벽 배송', '프리미엄 식재료', '전국 대량급식 가능', 'HACCP 인증 시설'];
 
     return (
@@ -142,15 +141,17 @@ const Header = () => {
                                 </span>
                             </Link>
                             <nav className="hidden lg:flex items-center gap-7 ml-6 h-full">
-                                <Link
-                                    to="/"
-                                    className={`h-full flex items-center text-[15px] font-medium transition-colors whitespace-nowrap border-b ${isB2B
-                                        ? 'text-[var(--color-primary)] border-[var(--color-primary)]'
-                                        : 'text-[var(--color-text-gray)] border-transparent hover:text-[var(--color-text-dark)]'
-                                        }`}
-                                >
-                                    B2B 대량급식
-                                </Link>
+                                {showB2BNav && (
+                                    <Link
+                                        to="/"
+                                        className={`h-full flex items-center text-[15px] font-medium transition-colors whitespace-nowrap border-b ${isB2B
+                                            ? 'text-[var(--color-primary)] border-[var(--color-primary)]'
+                                            : 'text-[var(--color-text-gray)] border-transparent hover:text-[var(--color-text-dark)]'
+                                            }`}
+                                    >
+                                        B2B 대량급식
+                                    </Link>
+                                )}
                                 <Link
                                     to="/cham-banchan"
                                     className={`h-full flex items-center text-[15px] font-medium transition-colors whitespace-nowrap border-b ${!isB2B
@@ -236,19 +237,21 @@ const Header = () => {
             </header>
 
             {/* Category bar */}
-            <nav className="hidden md:block bg-white border-b border-gray-100 overflow-x-auto">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-7 h-10 w-max min-w-full">
-                    {categoryLinks.map((link) => (
-                        <Link
-                            key={link.to}
-                            to={link.to}
-                            className="text-[13px] text-gray-500 hover:text-[var(--color-text-dark)] transition-colors whitespace-nowrap"
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
-                </div>
-            </nav>
+            {categoryLinks.length > 0 && (
+                <nav className="hidden md:block bg-white border-b border-gray-100 overflow-x-auto">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-7 h-10 w-max min-w-full">
+                        {categoryLinks.map((link) => (
+                            <Link
+                                key={link.key}
+                                to={link.to}
+                                className="text-[13px] text-gray-500 hover:text-[var(--color-text-dark)] transition-colors whitespace-nowrap"
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </div>
+                </nav>
+            )}
             </div>
 
             {/* Cart Drawer */}

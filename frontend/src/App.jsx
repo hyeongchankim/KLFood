@@ -12,6 +12,7 @@ import OrderInfoPage from './pages/OrderInfoPage';
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminMembersPage from './pages/admin/AdminMembersPage';
 import AdminBillingPage from './pages/admin/AdminBillingPage';
+import AdminTabsPage from './pages/admin/AdminTabsPage';
 import { CartProvider } from './context/CartContext';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
               <Route index element={<Navigate to="members" replace />} />
               <Route path="members" element={<AdminMembersPage />} />
               <Route path="billing" element={<AdminBillingPage />} />
+              <Route path="tabs" element={<AdminTabsPage />} />
             </Route>
             <Route path="/mypage" element={<MyPage />} />
           </Routes>

@@ -8,6 +8,7 @@ const ADMIN_PASSCODE = 'klfood2026';
 const tabs = [
     { to: '/admin/members', label: '회원 관리' },
     { to: '/admin/billing', label: '청구 관리' },
+    { to: '/admin/tabs', label: '탭 설정' },
 ];
 
 const AdminLayout = () => {

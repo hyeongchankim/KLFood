@@ -6,6 +6,7 @@ const dummyDataPath = path.resolve(__dirname, '../data/dummyData.json');
 const usersFilePath = path.resolve(__dirname, '../data/users.json');
 const mealPlansFilePath = path.resolve(__dirname, '../data/mealPlans.json');
 const ordersFilePath = path.resolve(__dirname, '../data/orders.json');
+const settingsFilePath = path.resolve(__dirname, '../data/settings.json');
 
 // ponytail: hardcoded price map, move to dummyData.json lookup if menu options grow
 // day-by-day calendar billing (A/B세트) keyed by the set letter
@@ -226,6 +227,33 @@ exports.promoteUser = (req, res) => {
 
     const { password, ...safe } = target;
     res.status(200).json({ success: true, user: safe });
+};
+
+// 상단 카테고리 탭 노출 설정. 키는 프런트 lib/tabSettings.js 의 TABS 와 맞춰야 함
+const VALID_TABS = ['b2b', 'meal', 'mealplan', 'lunchbox', 'single'];
+
+const readSettings = () => {
+    if (!fs.existsSync(settingsFilePath)) {
+        fs.writeFileSync(settingsFilePath, JSON.stringify({ hiddenTabs: [] }, null, 2));
+    }
+    return JSON.parse(fs.readFileSync(settingsFilePath, 'utf8'));
+};
+
+exports.getSettings = (req, res) => {
+    res.status(200).json({ hiddenTabs: readSettings().hiddenTabs || [] });
+};
+
+exports.setHiddenTabs = (req, res) => {
+    if (!requireAdmin(req, res)) return;
+
+    const { hiddenTabs } = req.body;
+    if (!Array.isArray(hiddenTabs) || !hiddenTabs.every((t) => VALID_TABS.includes(t))) {
+        return res.status(400).json({ message: '올바르지 않은 탭 값입니다.' });
+    }
+
+    const settings = { ...readSettings(), hiddenTabs: [...new Set(hiddenTabs)] };
+    fs.writeFileSync(settingsFilePath, JSON.stringify(settings, null, 2));
+    res.status(200).json({ hiddenTabs: settings.hiddenTabs });
 };
 
 exports.createOrder = (req, res) => {

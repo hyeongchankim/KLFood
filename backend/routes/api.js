@@ -14,6 +14,8 @@ router.patch('/orders/:id/day', apiController.setDeliveryDay);
 router.patch('/orders/:id/payment', apiController.setPaymentDate);
 router.patch('/orders/:id/payer', apiController.setPayerName);
 router.post('/orders/:id/invoice', apiController.sendInvoice);
+router.get('/settings', apiController.getSettings);
+router.put('/settings/hidden-tabs', apiController.setHiddenTabs);
 router.get('/users', apiController.getUsers);
 router.patch('/users/:id/promote', apiController.promoteUser);
 
