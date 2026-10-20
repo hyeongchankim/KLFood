@@ -1,13 +1,12 @@
 import { apiUrl } from '../lib/api';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Check, Leaf, ShieldCheck, Sunrise, Truck } from 'lucide-react';
+import { ArrowRight, Check, Leaf, Sunrise, Truck } from 'lucide-react';
 import CustomerReviews from '../components/CustomerReviews';
 
 const img = (id) => `https://images.unsplash.com/${id}?q=80&w=800&auto=format&fit=crop`;
 
 const trust = [
-    { icon: ShieldCheck, label: 'HACCP 인증 시설' },
     { icon: Sunrise, label: '당일 조리 · 새벽 배송' },
     { icon: Truck, label: '도봉 · 노원 · 중랑 배송' },
     { icon: Leaf, label: '저염 · 저당 건강식' },
@@ -29,31 +28,34 @@ const steps = [
 
 const dayLabel = (d) => `${d.getMonth() + 1}/${d.getDate()} (${'일월화수목금토'[d.getDay()]})`;
 
-// 오늘부터 앞으로 평일 5일의 식단 (월 경계는 다음 달 식단을 같이 불러와 이어 붙임)
+// 이번 주 월~금 식단 (토·일에는 다음 주). 주가 두 달에 걸치면 두 달 식단을 모두 불러옴
 const useWeeklyMenu = () => {
     const [menu, setMenu] = useState([]);
 
     useEffect(() => {
         const today = new Date();
-        const months = [today, new Date(today.getFullYear(), today.getMonth() + 1, 1)];
+        const dow = today.getDay(); // 0=일 … 6=토
+        const week = Array.from({ length: 5 }, (_, i) => {
+            const offset = dow === 0 ? 1 : dow === 6 ? 2 : 1 - dow; // 월요일까지의 일수
+            return new Date(today.getFullYear(), today.getMonth(), today.getDate() + offset + i);
+        });
+        const months = [...new Set(week.map((d) => `${d.getFullYear()}-${d.getMonth() + 1}`))];
+
         Promise.all(
-            months.map((d) =>
-                fetch(apiUrl(`/api/meal-plan?year=${d.getFullYear()}&month=${d.getMonth() + 1}`))
+            months.map((key) => {
+                const [year, month] = key.split('-');
+                return fetch(apiUrl(`/api/meal-plan?year=${year}&month=${month}`))
                     .then((r) => r.json())
-                    .then((data) => ({ year: d.getFullYear(), month: d.getMonth() + 1, days: data.days || {} })),
-            ),
+                    .then((data) => [key, data.days || {}]);
+            }),
         )
-            .then((plans) => {
-                const result = [];
-                const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-                // 평일 5일을 채우거나, 불러온 두 달 범위를 벗어나면 중단
-                for (let i = 0; i < 40 && result.length < 5; i++) {
-                    const plan = plans.find((p) => p.year === cursor.getFullYear() && p.month === cursor.getMonth() + 1);
-                    const day = plan?.days[cursor.getDate()];
-                    if (cursor.getDay() % 6 !== 0 && day) result.push({ label: dayLabel(cursor), ...day });
-                    cursor.setDate(cursor.getDate() + 1);
-                }
-                setMenu(result);
+            .then((entries) => {
+                const plans = Object.fromEntries(entries);
+                setMenu(
+                    week
+                        .map((d) => ({ label: dayLabel(d), ...plans[`${d.getFullYear()}-${d.getMonth() + 1}`]?.[d.getDate()] }))
+                        .filter((item) => item.main),
+                );
             })
             .catch((err) => console.error('Failed to load weekly menu', err));
     }, []);
@@ -109,7 +111,7 @@ const HomePage = () => {
 
             {/* Trust strip */}
             <section className="border-b border-gray-200">
-                <ul className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 lg:grid-cols-4 gap-y-4 gap-x-6">
+                <ul className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 sm:grid-cols-3 gap-y-4 gap-x-6">
                     {trust.map((t) => (
                         <li key={t.label} className="flex items-center gap-3 text-sm font-medium text-gray-700">
                             <t.icon className="w-5 h-5 text-[var(--color-accent)] flex-shrink-0" />

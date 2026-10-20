@@ -113,7 +113,7 @@ const Header = () => {
     // 설정 로딩 전(null)에는 탭을 그리지 않아 숨길 탭이 깜빡이지 않게 함
     const categoryLinks = hiddenTabs ? TABS.filter((t) => !hiddenTabs.includes(t.key)) : [];
     const showB2BNav = hiddenTabs !== null && !hiddenTabs.includes('b2b');
-    const tickerItems = ['매일 새벽 배송', '프리미엄 식재료', '전국 대량급식 가능', 'HACCP 인증 시설'];
+    const tickerItems = ['매일 새벽 배송', '프리미엄 식재료', '전국 대량급식 가능'];
 
     return (
         <>
