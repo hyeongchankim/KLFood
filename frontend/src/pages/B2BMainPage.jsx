@@ -67,7 +67,7 @@ const B2BMainPage = () => {
 
                     <div className="flex-1 relative w-full max-w-md mx-auto">
                         <img
-                            src="https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=800&auto=format&fit=crop"
+                            src="/instagram/food/DbosfAhhNme.jpg"
                             alt="맛있고 건강한 단체 급식"
                             className="rounded-[2rem] w-full h-auto object-cover aspect-[4/5]"
                         />

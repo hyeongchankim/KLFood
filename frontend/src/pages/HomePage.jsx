@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Check, Leaf, Sunrise, Truck } from 'lucide-react';
 import CustomerReviews from '../components/CustomerReviews';
-
-const img = (id) => `https://images.unsplash.com/${id}?q=80&w=800&auto=format&fit=crop`;
+import TodayMenuGallery from '../components/TodayMenuGallery';
+import { INSTAGRAM_URL, KAKAO_CHANNEL_URL } from '../lib/links';
 
 const trust = [
     { icon: Sunrise, label: '당일 조리 · 새벽 배송' },
@@ -13,10 +13,10 @@ const trust = [
 ];
 
 const benefits = [
-    { title: '당일 조리', text: '그날 아침 만든 반찬만 담아요.', image: img('photo-1544025162-d76694265947') },
-    { title: '새벽 문 앞 배송', text: '출근 전, 아침상에 맞춰 도착해요.', image: img('photo-1583224964978-2257b960c3d3') },
-    { title: '영양사 설계 식단', text: '맛과 영양의 균형을 맞춘 식단표.', image: img('photo-1540420773420-3366772f4999') },
-    { title: '부담 없는 가격', text: '먹은 횟수만큼만 월말에 청구해요.', image: img('photo-1512621776951-a57141f2eefd') },
+    { title: '당일 조리', text: '그날 아침 만든 반찬만 담아요.', image: '/instagram/food/DbmYEYCh0Qs.jpg' },
+    { title: '새벽 문 앞 배송', text: '출근 전, 아침상에 맞춰 도착해요.', image: '/instagram/food/DbjzyE_hrnj.jpg' },
+    { title: '영양사 설계 식단', text: '맛과 영양의 균형을 맞춘 식단표.', image: '/instagram/food/DbcHosMhAjM.jpg' },
+    { title: '부담 없는 가격', text: '먹은 횟수만큼만 월말에 청구해요.', image: '/instagram/food/DbZSWBahQsi.jpg' },
 ];
 
 const steps = [
@@ -101,7 +101,7 @@ const HomePage = () => {
 
                     <div className="relative max-w-md w-full mx-auto lg:max-w-none">
                         <img
-                            src={img('photo-1555939594-58d7cb561ad1')}
+                            src={'/instagram/food/DbW6JWJBSJ-.jpg'}
                             alt="당일 조리한 참반찬 닭갈비"
                             className="w-full aspect-[4/5] lg:aspect-[5/6] object-cover rounded-t-[999px]"
                         />
@@ -220,6 +220,8 @@ const HomePage = () => {
                 </section>
             )}
 
+            <TodayMenuGallery />
+
             <CustomerReviews />
 
             {/* Closing CTA */}
@@ -235,6 +237,12 @@ const HomePage = () => {
                             문의 010-2420-4465
                         </a>
                     </div>
+                    <p className="mt-6 text-sm text-white/80">
+                        <a href={KAKAO_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-white">카카오톡 채널</a>
+                        {' · '}
+                        <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-white">인스타그램</a>
+                        에서도 만나요
+                    </p>
                 </div>
             </section>
         </div>

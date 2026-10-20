@@ -1,6 +1,12 @@
 import { useState } from 'react';
-import { ArrowRight, Instagram, Linkedin, MessageCircle } from 'lucide-react';
+import { ArrowRight, Instagram, MessageCircle } from 'lucide-react';
+import { INSTAGRAM_URL, KAKAO_CHANNEL_URL } from '../lib/links';
 const klfoodLogo = '/KLfood_로고.png';
+
+const socialLinks = [
+    { href: INSTAGRAM_URL, label: '참반찬 인스타그램', icon: Instagram },
+    { href: KAKAO_CHANNEL_URL, label: '참반찬 카카오톡 채널', icon: MessageCircle },
+];
 
 const Footer = () => {
     const [email, setEmail] = useState('');
@@ -32,15 +38,11 @@ const Footer = () => {
                 </form>
 
                 <div className="flex gap-3 mt-6">
-                    <a href="#" className="w-9 h-9 rounded-full border border-gray-200 text-gray-400 flex items-center justify-center hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors">
-                        <Instagram className="w-4 h-4" />
-                    </a>
-                    <a href="#" className="w-9 h-9 rounded-full border border-gray-200 text-gray-400 flex items-center justify-center hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors">
-                        <Linkedin className="w-4 h-4" />
-                    </a>
-                    <a href="#" className="w-9 h-9 rounded-full border border-gray-200 text-gray-400 flex items-center justify-center hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors">
-                        <MessageCircle className="w-4 h-4" />
-                    </a>
+                    {socialLinks.map((link) => (
+                        <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label} title={link.label} className="w-9 h-9 rounded-full border border-gray-200 text-gray-400 flex items-center justify-center hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors">
+                            <link.icon className="w-4 h-4" />
+                        </a>
+                    ))}
                 </div>
             </div>
 

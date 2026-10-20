@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import PageHero from '../components/PageHero';
+import TodayMenuGallery from '../components/TodayMenuGallery';
 
 const weekdayLabels = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -166,6 +167,8 @@ const MealPlanPage = () => {
                     )}
                 </div>
             </div>
+
+            <TodayMenuGallery />
         </div>
     );
 };
