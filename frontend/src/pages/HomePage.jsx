@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Check, Leaf, Sunrise, Truck } from 'lucide-react';
 import CustomerReviews from '../components/CustomerReviews';
 import TodayMenuGallery from '../components/TodayMenuGallery';
+import { CookArt, DeliveryArt, PlanArt, PriceArt, HomeMealArt } from '../components/BenefitArt';
 import { INSTAGRAM_URL, KAKAO_CHANNEL_URL } from '../lib/links';
+
 
 const trust = [
     { icon: Sunrise, label: '당일 조리 · 새벽 배송' },
@@ -13,10 +15,10 @@ const trust = [
 ];
 
 const benefits = [
-    { title: '당일 조리', text: '그날 아침 만든 반찬만 담아요.', image: '/instagram/food/DbmYEYCh0Qs.jpg' },
-    { title: '새벽 문 앞 배송', text: '출근 전, 아침상에 맞춰 도착해요.', image: '/instagram/food/DbjzyE_hrnj.jpg' },
-    { title: '영양사 설계 식단', text: '맛과 영양의 균형을 맞춘 식단표.', image: '/instagram/food/DbcHosMhAjM.jpg' },
-    { title: '부담 없는 가격', text: '먹은 횟수만큼만 월말에 청구해요.', image: '/instagram/food/DbZSWBahQsi.jpg' },
+    { title: '당일 조리', text: '그날 아침 만든 반찬만 담아요.', Art: CookArt, bg: 'bg-[var(--color-primary)]', light: true },
+    { title: '새벽 문 앞 배송', text: '출근 전, 아침상에 맞춰 도착해요.', Art: DeliveryArt, bg: 'bg-[#2E5A45]', light: true },
+    { title: '영양사 설계 식단', text: '맛과 영양의 균형을 맞춘 식단표.', Art: PlanArt, bg: 'bg-[var(--color-accent)]', light: true },
+    { title: '부담 없는 가격', text: '먹은 횟수만큼만 월말에 청구해요.', Art: PriceArt, bg: 'bg-[var(--color-secondary)]', light: false },
 ];
 
 const steps = [
@@ -100,11 +102,9 @@ const HomePage = () => {
                     </div>
 
                     <div className="relative max-w-md w-full mx-auto lg:max-w-none">
-                        <img
-                            src={'/instagram/food/DbW6JWJBSJ-.jpg'}
-                            alt="당일 조리한 참반찬 닭갈비"
-                            className="w-full aspect-[4/5] lg:aspect-[5/6] object-cover rounded-t-[999px]"
-                        />
+                        <div className="w-full aspect-[4/5] lg:aspect-[5/6] rounded-t-[999px] overflow-hidden">
+                            <HomeMealArt />
+                        </div>
                     </div>
                 </div>
             </section>
@@ -129,12 +129,13 @@ const HomePage = () => {
                 </div>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     {benefits.map((b) => (
-                        <article key={b.title} className="relative aspect-[3/4] rounded-3xl overflow-hidden group">
-                            <img src={b.image} alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-primary)]/90 via-[var(--color-primary)]/20 to-transparent" />
-                            <div className="absolute bottom-0 p-5 sm:p-6 text-[var(--color-background-warm)]">
+                        <article key={b.title} className={`relative aspect-[3/4] rounded-3xl overflow-hidden flex flex-col ${b.bg} ${b.light ? 'text-[var(--color-background-warm)]' : 'text-[var(--color-text-dark)]'}`}>
+                            <div className="flex-1 min-h-0 px-4 pt-6">
+                                <b.Art />
+                            </div>
+                            <div className="p-5 sm:p-6">
                                 <h3 className="text-xl sm:text-2xl mb-1.5">{b.title}</h3>
-                                <p className="text-sm text-[var(--color-background-warm)]/80 leading-snug">{b.text}</p>
+                                <p className={`text-sm leading-snug ${b.light ? 'text-[var(--color-background-warm)]/80' : 'text-[var(--color-text-dark)]/75'}`}>{b.text}</p>
                             </div>
                         </article>
                     ))}
