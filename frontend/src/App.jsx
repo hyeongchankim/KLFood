@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import B2BMainPage from './pages/B2BMainPage';
 import B2CMainPage from './pages/B2CMainPage';
+import HomePage from './pages/HomePage';
 import MealPlanPage from './pages/MealPlanPage';
 import MyPage from './pages/MyPage';
 import ComingSoonPage from './pages/ComingSoonPage';
@@ -24,6 +25,7 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<B2BMainPage />} />
+            <Route path="/preview" element={<HomePage />} />
             <Route path="/cham-banchan" element={<B2CMainPage />} />
             <Route path="/cham-banchan/meal-plan" element={<MealPlanPage />} />
             <Route path="/cham-banchan/lunchbox" element={<LunchboxPage />} />
