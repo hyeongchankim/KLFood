@@ -1,7 +1,8 @@
 import { apiUrl } from '../lib/api';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import PageHero from '../components/PageHero';
 
 const weekdayLabels = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -59,19 +60,10 @@ const MealPlanPage = () => {
     const selectedMenu = isSelectedInViewMonth ? getMenuForDay(selectedDate.getDate()) : null;
 
     return (
-        <div className="bg-gray-50 min-h-screen pb-20">
-            <section className="bg-[var(--color-background-warm)] py-12 px-4">
-                <div className="max-w-5xl mx-auto text-center">
-                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-white text-[var(--color-primary)] font-bold text-sm rounded-full shadow-sm mb-4 border border-[var(--color-border)]">
-                        <CalendarDays className="w-4 h-4" />
-                        식단표
-                    </span>
-                    <h1 className="text-2xl md:text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">
-                        참반찬 이달의 식단표
-                    </h1>
-                    <p className="text-gray-600">날짜를 선택하면 그날의 추천 메뉴를 확인할 수 있어요.</p>
-                </div>
-            </section>
+        <div className="bg-[var(--color-background-warm)] min-h-screen pb-20">
+            <PageHero eyebrow="Monthly Menu" title="이달의" accent="식단표">
+                날짜를 선택하면 그날의 추천 메뉴를 확인할 수 있어요.
+            </PageHero>
 
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
                 {/* Calendar */}

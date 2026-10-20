@@ -52,7 +52,7 @@ const AdminMembersPage = () => {
 
     return (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10">
-            <h1 className="text-3xl mb-1">회원 <span className="italic text-[var(--color-primary)]">관리</span></h1>
+            <h1 className="text-3xl mb-1">회원 <span className="text-[var(--color-accent)]">관리</span></h1>
             <p className="text-sm text-gray-500 mb-6">회원 계정에 관리자 권한을 부여하세요.</p>
 
             <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">

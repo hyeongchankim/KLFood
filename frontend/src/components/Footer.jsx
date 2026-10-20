@@ -11,11 +11,11 @@ const Footer = () => {
     };
 
     return (
-        <footer className="bg-white border-t border-gray-100 text-[var(--color-text-dark)]">
+        <footer className="bg-[var(--color-background-warm)] border-t border-gray-200 text-[var(--color-text-dark)]">
             {/* Newsletter */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10">
                 <h2 className="text-2xl mb-5">
-                    <span className="italic text-[var(--color-primary)]">Thrive</span> With KL FOOD
+                    <span className="italic text-[var(--color-accent)]">Thrive</span> With KL FOOD
                 </h2>
                 <form onSubmit={handleSubscribe} className="flex max-w-md rounded-full overflow-hidden bg-gray-50 border border-gray-200 focus-within:border-[var(--color-primary)] transition-colors">
                     <input

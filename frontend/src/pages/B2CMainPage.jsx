@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { ShoppingCart, Heart, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import CustomerReviews from '../components/CustomerReviews';
+import PageHero from '../components/PageHero';
 
 const B2CMainPage = () => {
     const [products, setProducts] = useState([]);
@@ -30,17 +31,12 @@ const B2CMainPage = () => {
     return (
         <div className="bg-[var(--color-background-warm)] min-h-screen pb-20">
             {/* Page Header */}
-            <section className="max-w-3xl mx-auto text-center px-4 pt-16 pb-10">
-                <h1 className="text-4xl sm:text-5xl mb-4">
-                    정기 <span className="italic text-[var(--color-primary)]">식단</span>
-                </h1>
-                <p className="text-gray-500">
-                    맞춤 식단표대로, 당일 조리한 신선한 반찬을 매일 새벽 문 앞으로 배송해 드립니다.
-                </p>
-            </section>
+            <PageHero eyebrow="Weekly Meal Plan" title="정기" accent="식단">
+                맞춤 식단표대로, 당일 조리한 신선한 반찬을 매일 새벽 문 앞으로 배송해 드립니다.
+            </PageHero>
 
             {/* Delivery info */}
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row gap-4 pb-12">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row gap-4 pt-10 pb-12">
                 <div className="text-left bg-white rounded-2xl px-6 py-5 border border-[var(--color-border)] md:w-72 flex-shrink-0">
                     <p className="text-sm font-bold text-[var(--color-primary)] mb-2">배송정보</p>
                     <ul className="text-sm text-gray-700 space-y-1">
@@ -117,7 +113,7 @@ const B2CMainPage = () => {
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
                         {filteredProducts.map((product) => (
                             <div key={product.id} className="group">
-                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-sm overflow-hidden mb-4">
+                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-2xl overflow-hidden mb-4">
                                     <img
                                         src={product.imageUrl}
                                         alt={product.name}

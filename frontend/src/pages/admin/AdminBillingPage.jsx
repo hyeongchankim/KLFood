@@ -157,7 +157,7 @@ const AdminBillingPage = () => {
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-6">
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                     <div>
-                        <h1 className="text-3xl mb-1">청구 <span className="italic text-[var(--color-primary)]">관리</span></h1>
+                        <h1 className="text-3xl mb-1">청구 <span className="text-[var(--color-accent)]">관리</span></h1>
                         <p className="text-sm text-gray-500">날짜별로 A/B세트 배달을 체크하고 입금일을 관리하세요.</p>
                     </div>
                     <div className="flex items-center gap-3">

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { User, CheckCircle } from 'lucide-react';
 import OrderDetailsFields, { initialOrderDetails } from '../components/OrderDetailsFields';
+import PageHero from '../components/PageHero';
 
 const OrderInfoPage = () => {
     const navigate = useNavigate();
@@ -63,14 +64,10 @@ const OrderInfoPage = () => {
 
     return (
         <div className="bg-[var(--color-background-warm)] min-h-screen pb-20">
-            <section className="max-w-2xl mx-auto text-center px-4 pt-16 pb-10">
-                <h1 className="text-4xl sm:text-5xl mb-4">
-                    주문 <span className="italic text-[var(--color-primary)]">정보 입력</span>
-                </h1>
-                <p className="text-gray-500">
-                    아래 정보를 입력해 주시면 오늘부터 참반찬 정기 식단을 시작할 수 있어요.
-                </p>
-            </section>
+            <PageHero eyebrow="Get Started" title="주문" accent="정보 입력">
+                아래 정보를 입력해 주시면 오늘부터 참반찬 정기 식단을 시작할 수 있어요.
+            </PageHero>
+            <div className="h-10" />
 
             <div className="max-w-lg mx-auto px-4">
                 <form onSubmit={handleSubmit} className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 space-y-4">

@@ -127,7 +127,7 @@ const Header = () => {
                     </div>
                 </div>
 
-            <header className="bg-white border-b border-gray-100">
+            <header className="bg-[var(--color-background-warm)] border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <div className="flex items-center gap-6">
@@ -238,7 +238,7 @@ const Header = () => {
 
             {/* Category bar */}
             {categoryLinks.length > 0 && (
-                <nav className="hidden md:block bg-white border-b border-gray-100 overflow-x-auto">
+                <nav className="hidden md:block bg-[var(--color-background-warm)] border-b border-gray-200 overflow-x-auto">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-7 h-10 w-max min-w-full">
                         {categoryLinks.map((link) => (
                             <Link

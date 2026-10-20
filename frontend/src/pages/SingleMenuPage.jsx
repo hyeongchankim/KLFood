@@ -4,6 +4,7 @@ import { ShoppingCart, Heart, SlidersHorizontal, ChevronDown, ArrowRight, ArrowL
 import { useCart } from '../context/CartContext';
 import { useSearchParams } from 'react-router-dom';
 import CustomerReviews from '../components/CustomerReviews';
+import PageHero from '../components/PageHero';
 
 const SingleMenuPage = () => {
     const [data, setData] = useState({ categories: [], products: [] });
@@ -53,14 +54,9 @@ const SingleMenuPage = () => {
     return (
         <div className="bg-[var(--color-background-warm)] min-h-screen pb-20">
             {/* Page Header */}
-            <section className="max-w-3xl mx-auto text-center px-4 pt-16 pb-10">
-                <h1 className="text-4xl sm:text-5xl mb-4">
-                    단품 <span className="italic text-[var(--color-primary)]">반찬</span>
-                </h1>
-                <p className="text-gray-500">
-                    엄선된 재료로 정성껏 만든 참반찬의 단품 메뉴를 만나보세요.
-                </p>
-            </section>
+            <PageHero eyebrow="Side Dishes" title="단품" accent="반찬">
+                엄선된 재료로 정성껏 만든 참반찬의 단품 메뉴를 만나보세요.
+            </PageHero>
 
             {/* Filter / Sort Bar */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-y border-[var(--color-border)]">
@@ -134,7 +130,7 @@ const SingleMenuPage = () => {
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
                         {filteredProducts.map((product) => (
                             <div key={product.id} className="group">
-                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-sm overflow-hidden mb-4">
+                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-2xl overflow-hidden mb-4">
                                     <img
                                         src={product.imageUrl}
                                         alt={product.name}
@@ -191,7 +187,7 @@ const SingleMenuPage = () => {
                     <div ref={newArrivalsRef} className="flex-1 flex gap-5 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         {newArrivals.map((product) => (
                             <div key={product.id} className="flex-none w-[220px] group">
-                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-sm overflow-hidden mb-4">
+                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-2xl overflow-hidden mb-4">
                                     <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                     <button className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:text-red-500 transition-colors shadow-sm text-gray-400">
                                         <Heart className="w-4 h-4" />

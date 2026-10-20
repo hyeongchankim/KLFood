@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { ShoppingCart, Heart, SlidersHorizontal, ChevronDown, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import CustomerReviews from '../components/CustomerReviews';
+import PageHero from '../components/PageHero';
 
 const categories = ['전체', '기본 도시락', '스페셜 도시락', '채식 도시락', '추가메뉴', '품목', '곁들임식품'];
 
@@ -54,14 +55,9 @@ const LunchboxPage = () => {
     return (
         <div className="bg-[var(--color-background-warm)] min-h-screen pb-20">
             {/* Page Header */}
-            <section className="max-w-3xl mx-auto text-center px-4 pt-16 pb-10">
-                <h1 className="text-4xl sm:text-5xl mb-4">
-                    정기 <span className="italic text-[var(--color-primary)]">도시락</span>
-                </h1>
-                <p className="text-gray-500">
-                    매일 아침 새롭게 준비하는 참반찬 도시락 메뉴를 확인해 보세요.
-                </p>
-            </section>
+            <PageHero eyebrow="Daily Lunchbox" title="정기" accent="도시락">
+                매일 아침 새롭게 준비하는 참반찬 도시락 메뉴를 확인해 보세요.
+            </PageHero>
 
             {/* Filter / Sort Bar */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-y border-[var(--color-border)]">
@@ -119,7 +115,7 @@ const LunchboxPage = () => {
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
                         {filteredProducts.map((product) => (
                             <div key={product.id} className="group">
-                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-sm overflow-hidden mb-4">
+                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-2xl overflow-hidden mb-4">
                                     <img
                                         src={product.imageUrl}
                                         alt={product.name}
@@ -176,7 +172,7 @@ const LunchboxPage = () => {
                     <div ref={newArrivalsRef} className="flex-1 flex gap-5 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         {newArrivals.map((product) => (
                             <div key={product.id} className="flex-none w-[220px] group">
-                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-sm overflow-hidden mb-4">
+                                <div className="relative aspect-square bg-[var(--color-background-warm)] rounded-2xl overflow-hidden mb-4">
                                     <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                     <button className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:text-red-500 transition-colors shadow-sm text-gray-400">
                                         <Heart className="w-4 h-4" />

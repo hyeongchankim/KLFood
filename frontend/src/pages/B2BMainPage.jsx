@@ -43,48 +43,42 @@ const B2BMainPage = () => {
     return (
         <div className="bg-[var(--color-background-warm)] w-full">
             {/* Hero Section */}
-            <section className="relative overflow-hidden bg-gradient-to-br from-[var(--color-background-warm)] to-white py-20 lg:py-32">
-                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-[var(--color-secondary)] opacity-30 blur-3xl mix-blend-multiply"></div>
-                <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-[var(--color-primary)] opacity-20 blur-3xl mix-blend-multiply"></div>
-
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center gap-12">
+            <section className="relative overflow-hidden bg-[var(--color-primary)] text-[var(--color-background-warm)] py-20 lg:py-28">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center gap-12 lg:gap-20">
                     <div className="flex-1 text-center md:text-left">
-                        <span className="inline-block py-1 px-3 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-bold text-sm tracking-wide mb-4">
-                            신선한 식재료, 정직한 맛
-                        </span>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
+                        <p className="eyebrow text-[var(--color-accent-soft)] mb-5">Fresh ingredients · Honest taste</p>
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl leading-[1.15] mb-6">
                             건강한 한 끼를 위한 <br className="hidden md:block" />
-                            <span className="text-[var(--color-primary)]">맞춤형 대량 급식 솔루션</span>
+                            <span className="text-[var(--color-accent-soft)]">맞춤형 대량 급식 솔루션</span>
                         </h1>
-                        <p className="text-lg text-gray-600 mb-8 max-w-xl mx-auto md:mx-0 leading-relaxed">
+                        <p className="text-lg text-[var(--color-background-warm)]/70 mb-9 max-w-xl mx-auto md:mx-0 leading-relaxed">
                             어린이집, 유치원, 병원, 요양원 등 단체 급식 시설을 위한 KL FOOD의 프리미엄 식단을 만나보세요. 매일 새벽, 직접 조리한 따뜻한 반찬을 배송해 드립니다.
                         </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                            <a href="#inquiry-form" className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 group">
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+                            <a href="#inquiry-form" className="bg-[var(--color-background-warm)] hover:bg-white text-[var(--color-primary)] font-bold py-3.5 px-8 rounded-full transition-colors flex items-center justify-center gap-2 group">
                                 단가 및 식단 문의하기
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </a>
-                            <a href="#features" className="bg-white hover:bg-gray-50 text-gray-800 font-bold py-3 px-8 rounded-full shadow-md transition-all flex items-center justify-center border border-gray-200">
+                            <a href="#features" className="text-[var(--color-background-warm)] font-semibold py-3.5 px-8 rounded-full border border-[var(--color-background-warm)]/30 hover:bg-white/10 transition-colors flex items-center justify-center">
                                 서비스 자세히 보기
                             </a>
                         </div>
                     </div>
 
-                    <div className="flex-1 relative group w-full max-w-md mx-auto">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-secondary)] to-[var(--color-primary)] rounded-3xl transform rotate-3 scale-105 opacity-20 group-hover:rotate-6 transition-transform duration-500"></div>
+                    <div className="flex-1 relative w-full max-w-md mx-auto">
                         <img
                             src="https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=800&auto=format&fit=crop"
                             alt="맛있고 건강한 단체 급식"
-                            className="rounded-3xl shadow-2xl relative z-10 w-full h-auto object-cover border-4 border-white aspect-[4/3] group-hover:scale-105 transition-transform duration-500"
+                            className="rounded-[2rem] w-full h-auto object-cover aspect-[4/5]"
                         />
 
-                        <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-xl z-20 flex items-center gap-4 animate-bounce shrink-0" style={{ animationDuration: '3s' }}>
-                            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                                <CheckCircle className="w-6 h-6" />
+                        <div className="absolute -bottom-5 -left-5 bg-[var(--color-background-warm)] text-[var(--color-text-dark)] p-4 pr-6 rounded-2xl shadow-xl z-20 flex items-center gap-4 shrink-0">
+                            <div className="w-11 h-11 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-[var(--color-background-warm)]">
+                                <CheckCircle className="w-5 h-5" />
                             </div>
                             <div>
-                                <p className="text-xs text-gray-500 font-medium">HACCP 인증 시설</p>
-                                <p className="text-sm font-bold text-gray-900">100% 위생 조리</p>
+                                <p className="eyebrow !text-[10px] !tracking-[0.18em] text-gray-500">HACCP 인증 시설</p>
+                                <p className="text-sm font-bold">100% 위생 조리</p>
                             </div>
                         </div>
                     </div>
@@ -92,17 +86,17 @@ const B2BMainPage = () => {
             </section>
 
             {/* Features Section */}
-            <section id="features" className="py-24 bg-white">
+            <section id="features" className="py-24 bg-[var(--color-background-warm)]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center max-w-3xl mx-auto mb-16">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">KL FOOD만의 특별한 약속</h2>
+                        <h2 className="text-3xl md:text-4xl text-gray-900 mb-4">KL FOOD만의 특별한 약속</h2>
                         <p className="text-gray-600 text-lg">깐깐하게 고른 식재료로 정성을 다해, 우리 아이, 우리 가족이 먹는다는 생각으로 조리합니다.</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                         {/* Feature 1 */}
-                        <div className="bg-[var(--color-background-warm)] rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-[var(--color-border)]">
-                            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-[var(--color-primary)]">
+                        <div className="bg-white rounded-3xl p-8 hover:-translate-y-1 transition-transform duration-300 border border-[var(--color-border)]">
+                            <div className="w-14 h-14 bg-[var(--color-primary)] rounded-full flex items-center justify-center mb-6 text-[var(--color-background-warm)]">
                                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                                 </svg>
@@ -114,8 +108,8 @@ const B2BMainPage = () => {
                         </div>
 
                         {/* Feature 2 */}
-                        <div className="bg-[var(--color-background-warm)] rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-[var(--color-border)]">
-                            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-[var(--color-primary)]">
+                        <div className="bg-white rounded-3xl p-8 hover:-translate-y-1 transition-transform duration-300 border border-[var(--color-border)]">
+                            <div className="w-14 h-14 bg-[var(--color-primary)] rounded-full flex items-center justify-center mb-6 text-[var(--color-background-warm)]">
                                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
@@ -127,8 +121,8 @@ const B2BMainPage = () => {
                         </div>
 
                         {/* Feature 3 */}
-                        <div className="bg-[var(--color-background-warm)] rounded-2xl p-8 hover:-translate-y-2 transition-transform duration-300 border border-[var(--color-border)]">
-                            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-[var(--color-primary)]">
+                        <div className="bg-white rounded-3xl p-8 hover:-translate-y-1 transition-transform duration-300 border border-[var(--color-border)]">
+                            <div className="w-14 h-14 bg-[var(--color-primary)] rounded-full flex items-center justify-center mb-6 text-[var(--color-background-warm)]">
                                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                 </svg>

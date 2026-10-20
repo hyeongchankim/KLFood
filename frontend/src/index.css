@@ -1,26 +1,58 @@
-@import "tailwindcss";
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap');
+@import "tailwindcss";
 
-/* palette pulled from the KL FOOD logo's leaf/bowl greens, kept to one family site-wide */
+/*
+ * 디자인 시스템 — 따뜻한 크림 바탕 + 딥 포레스트 그린(주색) + 테라코타(포인트).
+ * 레퍼런스: Epicureal(밀 딜리버리 UI) 의 크림/그린 대비, Guild Coffee(브랜딩) 의 테라코타·세리프.
+ * gray 스케일도 따뜻한 중성색으로 덮어써서 bg-gray-*, text-gray-* 가 전부 같이 따뜻해짐.
+ */
 @theme {
-  --color-primary: #486B3B;
-  --color-primary-hover: #3A5630;
-  --color-secondary: #8AA757;
-  --color-background-warm: #F6F8F1;
-  --color-text-dark: #263422;
-  --color-text-gray: #6B7263;
-  --color-border: #E1E6D6;
+  --color-primary: #1F3D2F;
+  --color-primary-hover: #163025;
+  --color-secondary: #A9B79A;
+  --color-accent: #C2562E;
+  --color-accent-soft: #EBA781;
+  --color-background-warm: #FAF4E8;
+  --color-text-dark: #1B2A22;
+  --color-text-gray: #6C6A5E;
+  --color-border: #E7DDC9;
+
+  --color-gray-50: #FAF6EE;
+  --color-gray-100: #F1EADB;
+  --color-gray-200: #E7DDC9;
+  --color-gray-300: #D3C8B1;
+  --color-gray-400: #A59E8C;
+  --color-gray-500: #7C7766;
+  --color-gray-600: #5F5B4D;
+  --color-gray-700: #46433A;
+  --color-gray-800: #2F2E27;
+  --color-gray-900: #1B2A22;
+
+  --font-display: 'Playfair Display', 'Noto Serif KR', serif;
 }
 
 body {
   font-family: 'Pretendard', -apple-system, sans-serif;
   background-color: var(--color-background-warm);
   color: var(--color-text-dark);
+  /* 한글을 글자 단위가 아니라 어절 단위로 줄바꿈 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 h1, h2, h3 {
-  font-family: 'Pretendard', -apple-system, sans-serif;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* 작은 대문자 라벨 (히어로/섹션 위 eyebrow) */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
 }
 
 /* Custom Scrollbar for better aesthetics */
@@ -28,7 +60,7 @@ h1, h2, h3 {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--color-gray-100);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--color-primary);

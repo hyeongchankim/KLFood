@@ -22,7 +22,7 @@ const AdminTabsPage = () => {
 
     return (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10">
-            <h1 className="text-3xl mb-1">탭 <span className="italic text-[var(--color-primary)]">설정</span></h1>
+            <h1 className="text-3xl mb-1">탭 <span className="text-[var(--color-accent)]">설정</span></h1>
             <p className="text-sm text-gray-500 mb-6">사이트 상단에 보이는 탭을 숨기거나 다시 보이게 합니다. 숨겨도 페이지 주소로는 접속할 수 있습니다.</p>
 
             {error && <p className="text-sm text-red-600 mb-3">{error}</p>}
