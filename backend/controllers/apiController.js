@@ -1,12 +1,6 @@
-const fs = require('fs');
-const path = require('path');
 const bcrypt = require('bcryptjs');
-
-const dummyDataPath = path.resolve(__dirname, '../data/dummyData.json');
-const usersFilePath = path.resolve(__dirname, '../data/users.json');
-const mealPlansFilePath = path.resolve(__dirname, '../data/mealPlans.json');
-const ordersFilePath = path.resolve(__dirname, '../data/orders.json');
-const settingsFilePath = path.resolve(__dirname, '../data/settings.json');
+const { readDoc, writeDoc } = require('../db');
+const dummyData = require('../data/dummyData.json');
 
 // ponytail: hardcoded price map, move to dummyData.json lookup if menu options grow
 // day-by-day calendar billing (A/B세트) keyed by the set letter
@@ -19,44 +13,15 @@ const fallbackMenus = [
     { main: '한우곱창 볶음', side: '고추장소스진미채', soup: '바지락 된장찌개' },
 ];
 
-const readMealPlans = () => {
-    if (!fs.existsSync(mealPlansFilePath)) {
-        fs.writeFileSync(mealPlansFilePath, JSON.stringify({}, null, 2));
-    }
-    return JSON.parse(fs.readFileSync(mealPlansFilePath, 'utf8'));
-};
-
-const writeMealPlans = (plans) => {
-    fs.writeFileSync(mealPlansFilePath, JSON.stringify(plans, null, 2));
-};
-
 const pad2 = (n) => String(n).padStart(2, '0');
 
-const ensureUsersFile = () => {
-    if (!fs.existsSync(usersFilePath)) {
-        fs.writeFileSync(usersFilePath, JSON.stringify([], null, 2));
-    }
-};
-
-const readUsers = () => {
-    ensureUsersFile();
-    return JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
-};
-
-const writeUsers = (users) => {
-    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-};
-
-const readOrders = () => {
-    if (!fs.existsSync(ordersFilePath)) {
-        fs.writeFileSync(ordersFilePath, JSON.stringify([], null, 2));
-    }
-    return JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
-};
-
-const writeOrders = (orders) => {
-    fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2));
-};
+const readMealPlans = () => readDoc('mealPlans');
+const writeMealPlans = (plans) => writeDoc('mealPlans', plans);
+const readUsers = () => readDoc('users');
+const writeUsers = (users) => writeDoc('users', users);
+const readOrders = () => readDoc('orders');
+const writeOrders = (orders) => writeDoc('orders', orders);
+const readSettings = () => readDoc('settings');
 
 exports.handleB2BInquiry = (req, res) => {
     const { name, facilityType, phone, details } = req.body;
@@ -66,13 +31,7 @@ exports.handleB2BInquiry = (req, res) => {
 };
 
 exports.getChamProducts = (req, res) => {
-    fs.readFile(dummyDataPath, 'utf8', (err, data) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Failed to read data' });
-        }
-        res.json(JSON.parse(data));
-    });
+    res.json(dummyData);
 };
 
 exports.registerUser = async (req, res) => {
@@ -83,7 +42,7 @@ exports.registerUser = async (req, res) => {
     }
 
     try {
-        const users = readUsers();
+        const users = await readUsers();
         const existingUser = users.find((user) => user.email.toLowerCase() === email.toLowerCase());
         if (existingUser) {
             return res.status(409).json({ message: '이미 사용 중인 이메일입니다.' });
@@ -99,7 +58,7 @@ exports.registerUser = async (req, res) => {
         };
 
         users.push(newUser);
-        writeUsers(users);
+        await writeUsers(users);
 
         return res.status(201).json({
             success: true,
@@ -112,7 +71,7 @@ exports.registerUser = async (req, res) => {
     }
 };
 
-exports.getMealPlan = (req, res) => {
+exports.getMealPlan = async (req, res) => {
     const year = parseInt(req.query.year, 10);
     const month = parseInt(req.query.month, 10);
 
@@ -121,7 +80,7 @@ exports.getMealPlan = (req, res) => {
     }
 
     try {
-        const plans = readMealPlans();
+        const plans = await readMealPlans();
         const daysInMonth = new Date(year, month, 0).getDate();
         const days = {};
 
@@ -137,7 +96,7 @@ exports.getMealPlan = (req, res) => {
     }
 };
 
-exports.upsertMealPlanDay = (req, res) => {
+exports.upsertMealPlanDay = async (req, res) => {
     const { date, main, side, soup } = req.body;
 
     if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
@@ -148,9 +107,9 @@ exports.upsertMealPlanDay = (req, res) => {
     }
 
     try {
-        const plans = readMealPlans();
+        const plans = await readMealPlans();
         plans[date] = { main, side, soup };
-        writeMealPlans(plans);
+        await writeMealPlans(plans);
         res.status(200).json({ success: true, date, menu: plans[date] });
     } catch (error) {
         console.error('Upsert meal plan error:', error);
@@ -166,7 +125,7 @@ exports.loginUser = async (req, res) => {
     }
 
     try {
-        const users = readUsers();
+        const users = await readUsers();
         const user = users.find((candidate) => candidate.email.toLowerCase() === email.toLowerCase());
 
         if (!user) {
@@ -190,16 +149,16 @@ exports.loginUser = async (req, res) => {
 };
 
 // ponytail: token is just `demo-token-<userId>`, no expiry/signature — matches the rest of this app's auth, swap for real JWT if this ships beyond internal use
-const getRequestingUser = (req) => {
+const getRequestingUser = async (req) => {
     const authHeader = req.headers.authorization || '';
     const token = authHeader.replace(/^Bearer\s+/i, '');
     const userId = token.startsWith('demo-token-') ? token.slice('demo-token-'.length) : null;
     if (!userId) return null;
-    return readUsers().find((u) => u.id === userId) || null;
+    return (await readUsers()).find((u) => u.id === userId) || null;
 };
 
-const requireAdmin = (req, res) => {
-    const requester = getRequestingUser(req);
+const requireAdmin = async (req, res) => {
+    const requester = await getRequestingUser(req);
     if (!requester || !requester.isAdmin) {
         res.status(403).json({ message: '관리자만 이용할 수 있습니다.' });
         return null;
@@ -207,23 +166,23 @@ const requireAdmin = (req, res) => {
     return requester;
 };
 
-exports.getUsers = (req, res) => {
-    if (!requireAdmin(req, res)) return;
-    const users = readUsers().map(({ password, ...safe }) => safe);
+exports.getUsers = async (req, res) => {
+    if (!(await requireAdmin(req, res))) return;
+    const users = (await readUsers()).map(({ password, ...safe }) => safe);
     res.status(200).json({ users });
 };
 
-exports.promoteUser = (req, res) => {
-    if (!requireAdmin(req, res)) return;
+exports.promoteUser = async (req, res) => {
+    if (!(await requireAdmin(req, res))) return;
 
-    const users = readUsers();
+    const users = await readUsers();
     const target = users.find((u) => u.id === req.params.id);
     if (!target) {
         return res.status(404).json({ message: '사용자를 찾을 수 없습니다.' });
     }
 
     target.isAdmin = true;
-    writeUsers(users);
+    await writeUsers(users);
 
     const { password, ...safe } = target;
     res.status(200).json({ success: true, user: safe });
@@ -232,31 +191,24 @@ exports.promoteUser = (req, res) => {
 // 상단 카테고리 탭 노출 설정. 키는 프런트 lib/tabSettings.js 의 TABS 와 맞춰야 함
 const VALID_TABS = ['b2b', 'meal', 'mealplan', 'lunchbox', 'single'];
 
-const readSettings = () => {
-    if (!fs.existsSync(settingsFilePath)) {
-        fs.writeFileSync(settingsFilePath, JSON.stringify({ hiddenTabs: [] }, null, 2));
-    }
-    return JSON.parse(fs.readFileSync(settingsFilePath, 'utf8'));
+exports.getSettings = async (req, res) => {
+    res.status(200).json({ hiddenTabs: (await readSettings()).hiddenTabs || [] });
 };
 
-exports.getSettings = (req, res) => {
-    res.status(200).json({ hiddenTabs: readSettings().hiddenTabs || [] });
-};
-
-exports.setHiddenTabs = (req, res) => {
-    if (!requireAdmin(req, res)) return;
+exports.setHiddenTabs = async (req, res) => {
+    if (!(await requireAdmin(req, res))) return;
 
     const { hiddenTabs } = req.body;
     if (!Array.isArray(hiddenTabs) || !hiddenTabs.every((t) => VALID_TABS.includes(t))) {
         return res.status(400).json({ message: '올바르지 않은 탭 값입니다.' });
     }
 
-    const settings = { ...readSettings(), hiddenTabs: [...new Set(hiddenTabs)] };
-    fs.writeFileSync(settingsFilePath, JSON.stringify(settings, null, 2));
+    const settings = { ...(await readSettings()), hiddenTabs: [...new Set(hiddenTabs)] };
+    await writeDoc('settings', settings);
     res.status(200).json({ hiddenTabs: settings.hiddenTabs });
 };
 
-exports.createOrder = (req, res) => {
+exports.createOrder = async (req, res) => {
     const { name, phone, address, menuChoice, deliveryDays, entryAllowed, doorPassword } = req.body;
 
     if (!name || !phone || !address || !menuChoice) {
@@ -264,7 +216,7 @@ exports.createOrder = (req, res) => {
     }
 
     try {
-        const orders = readOrders();
+        const orders = await readOrders();
         const newOrder = {
             id: Date.now().toString(),
             name,
@@ -279,7 +231,7 @@ exports.createOrder = (req, res) => {
             payments: {},
         };
         orders.push(newOrder);
-        writeOrders(orders);
+        await writeOrders(orders);
         res.status(201).json({ success: true, order: newOrder });
     } catch (error) {
         console.error('Create order error:', error);
@@ -287,9 +239,9 @@ exports.createOrder = (req, res) => {
     }
 };
 
-exports.getOrders = (req, res) => {
+exports.getOrders = async (req, res) => {
     try {
-        const orders = readOrders();
+        const orders = await readOrders();
         res.status(200).json({ orders, prices: PRICE_BY_SET });
     } catch (error) {
         console.error('Get orders error:', error);
@@ -298,7 +250,7 @@ exports.getOrders = (req, res) => {
 };
 
 // toggles a single calendar day between A / B / empty for one customer's month, mirroring the old excel sheet
-exports.setDeliveryDay = (req, res) => {
+exports.setDeliveryDay = async (req, res) => {
     const { id } = req.params;
     const { month, day, value } = req.body;
 
@@ -307,7 +259,7 @@ exports.setDeliveryDay = (req, res) => {
     }
 
     try {
-        const orders = readOrders();
+        const orders = await readOrders();
         const order = orders.find((o) => o.id === id);
         if (!order) {
             return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
@@ -320,7 +272,7 @@ exports.setDeliveryDay = (req, res) => {
         } else {
             order.calendar[month][day] = value;
         }
-        writeOrders(orders);
+        await writeOrders(orders);
 
         res.status(200).json({ success: true, calendar: order.calendar[month] });
     } catch (error) {
@@ -330,7 +282,7 @@ exports.setDeliveryDay = (req, res) => {
 };
 
 // clicking the same paid date again un-checks it, matching the requested "체크" (check on/off) UX
-exports.setPaymentDate = (req, res) => {
+exports.setPaymentDate = async (req, res) => {
     const { id } = req.params;
     const { month, date } = req.body;
 
@@ -339,7 +291,7 @@ exports.setPaymentDate = (req, res) => {
     }
 
     try {
-        const orders = readOrders();
+        const orders = await readOrders();
         const order = orders.find((o) => o.id === id);
         if (!order) {
             return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
@@ -349,7 +301,7 @@ exports.setPaymentDate = (req, res) => {
         const current = order.payments[month] || {};
         const alreadyPaidThisDate = current.paidAt === date;
         order.payments[month] = { ...current, paidAt: alreadyPaidThisDate ? undefined : date };
-        writeOrders(orders);
+        await writeOrders(orders);
 
         res.status(200).json({ success: true, payment: order.payments[month] });
     } catch (error) {
@@ -358,7 +310,7 @@ exports.setPaymentDate = (req, res) => {
     }
 };
 
-exports.setPayerName = (req, res) => {
+exports.setPayerName = async (req, res) => {
     const { id } = req.params;
     const { month, payerName } = req.body;
 
@@ -367,7 +319,7 @@ exports.setPayerName = (req, res) => {
     }
 
     try {
-        const orders = readOrders();
+        const orders = await readOrders();
         const order = orders.find((o) => o.id === id);
         if (!order) {
             return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
@@ -375,7 +327,7 @@ exports.setPayerName = (req, res) => {
 
         order.payments = order.payments || {};
         order.payments[month] = { ...(order.payments[month] || {}), payerName: payerName || '' };
-        writeOrders(orders);
+        await writeOrders(orders);
 
         res.status(200).json({ success: true, payment: order.payments[month] });
     } catch (error) {
@@ -385,7 +337,7 @@ exports.setPayerName = (req, res) => {
 };
 
 // ponytail: mock send — no real email/SMS integration. Just marks as sent.
-exports.sendInvoice = (req, res) => {
+exports.sendInvoice = async (req, res) => {
     const { id } = req.params;
     const { month } = req.body;
 
@@ -394,7 +346,7 @@ exports.sendInvoice = (req, res) => {
     }
 
     try {
-        const orders = readOrders();
+        const orders = await readOrders();
         const order = orders.find((o) => o.id === id);
         if (!order) {
             return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
@@ -406,7 +358,7 @@ exports.sendInvoice = (req, res) => {
             invoiceSent: true,
             invoiceSentAt: new Date().toISOString(),
         };
-        writeOrders(orders);
+        await writeOrders(orders);
 
         res.status(200).json({ success: true, payment: order.payments[month] });
     } catch (error) {

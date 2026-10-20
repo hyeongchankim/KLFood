@@ -1,0 +1,11 @@
+{
+  "name": "klfood",
+  "private": true,
+  "description": "Vercel 배포용 루트 패키지. api/index.js 가 backend/app.js 를 불러오므로 backend/package.json 의 의존성과 같게 유지할 것",
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}
